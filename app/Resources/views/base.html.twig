@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Administration WOO!!!{% endblock %}</title>
+        {% block stylesheets %}
+            {% stylesheets 'bundles/user/css/*' filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+
+        {% endblock stylesheets %}
+        {% block javascript %}
+            {% javascripts '@UserBundle/Resources/public/js/*'
+                'bundles/user/js/jquery-1.8.3.min.js'
+                'bundles/user/js/jquery-ui.min.js'
+            %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        {% endblock javascript %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('bundles/user/img/Setting-icon.png') }}" />
+    </head>
+
+    <body class="size-1140">
+    <!-- TOP NAV WITH LOGO -->
+    <header>
+        <nav>
+            <div class="line">
+                <div class="s-12 l-4">
+                    <img class="s-12 l-12  logo" src={{ asset('bundles/user/img/adminlogo.png') }}>
+                </div>
+                <div class="top-nav l-8 s-12">
+                    <p class="nav-text">Custom menu text</p>
+                    <ul class="center">
+                        <li class="">
+                            <a href="{{ path( 'user_homepage' ) }}">Home <i class="icon-sli-home "></i> </a>
+                        </li>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <li class="right">
+                                <a href="{{ path('fos_user_security_logout') }}">
+                                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                                    <i class="icon-sli-logout "></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('show_all_users' ) }}"> Edit Users <i class="icon-sli-settings"></i></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('create_user') }}"> New User <i class="icon-sli-user-follow "></i></a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ path('register') }}">Registration</a>
+                            </li>
+                            <form class="l-6" action="{{ path("fos_user_security_check") }}" method="post">
+                                {% if data.csrf_token %}
+                                    <input type="hidden" name="_csrf_token" value="{{ data.csrf_token }}" />
+                                {% endif %}
+                                <div class="l-8">
+                                    <label class="l-6 s-6" for="username">{{ 'security.login.username'|trans }}</label>
+                                    <label class="l-6 s-6 " for="password">{{ 'security.login.password'|trans }}</label>
+                                    <input class="l-6 s-6" type="text" id="username" name="_username" value="{{ data.last_username }}" required="required" />
+
+                                    <input class="l-6 s-6" type="password" id="password" name="_password" required="required" />
+                                </div>
+                                <div class="l-4">
+                                    <label class="l-8 s-6" for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                                    <input class="l-1 s-6" type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                    <input class="l-10 icon-sli-login" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }} " />
+                                </div>
+                                {#{% if data.error %}#}
+                                    {#<div>{{ data.error.messageKey|trans(data.error.messageData, 'security') }}</div>#}
+                                {#{% endif %}#}
+                            </form>
+                        {% endif %}
+
+                        <li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- ASIDE NAV AND CONTENT -->
+    <div class="line">
+        <div class="box  margin-bottom">
+            <div class="margin">
+                <!-- ASIDE NAV 1 -->
+                {% block aside %}
+                {% endblock %}
+                <!-- CONTENT -->
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <!-- FOOTER -->
+    <footer class="box">
+        <div class="line">
+            <div class="s-12 l-6">
+                <p>Copyright 2017, Vision Design - graphic zoo</p>
+            </div>
+            <div class="s-12 l-6">
+                <a class="right" href="http://www.myresponsee.com" title="Responsee - lightweight responsive framework">Design and coding by Responsee Team</a>
+            </div>
+        </div>
+    </footer>
+    {#<script type="text/javascript" src="js/responsee.js"></script>#}
+
+
+        {% block javascripts %}
+            {% javascripts
+                'bundles/user/js/responsee.js'
+                'bundles/user/js/bootstrap.js'
+            %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+
+    </body>
+</html>

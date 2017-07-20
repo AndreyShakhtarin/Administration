@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block  aside %}
+    {% include '@User/Users/Aside/aside.html.twig' %}
+{% endblock %}
+{% block body %}
+    <section class="s-12 l-8">
+        <h3 class="text-center">Show All Users</h3>
+        <table class="table-responsive margin-bottom">
+            <thead>
+                <th>#</th>
+                <th>Name</th>
+                <th>Lastname</th>
+                <th>Birthday</th>
+                <th class="text-center" colspan="3">action</th>
+            </thead>
+            {% for user in users %}
+                <tbody>
+                <td>{{ loop.index + ( current_page * 7 ) }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.surname }}</td>
+                <td>{{ user.birthday }}</td>
+                <td><a href="{{ path( 'show_user', { 'token' : user.confirmationtoken } ) }}">Show</a></td>
+                <td><a href="{{ path( 'edit_user', { 'token' : user.confirmationtoken } ) }}">Edit</a></td>
+                <td><a href="{{ path( 'delete_user', { 'token' : user.confirmationtoken } ) }}">Delete</a></td>
+                </tbody>
+            {% endfor %}
+        </table>
+        {% include '@User/Users/ShowAllUsers/pagination.html.twig' %}
+    </section>
+{% endblock %}

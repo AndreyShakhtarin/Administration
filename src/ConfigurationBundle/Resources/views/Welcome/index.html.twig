@@ -1,0 +1,14 @@
+{% extends "@Configuration/Default/index.html.twig" %}
+{% block body %}
+    <div class="l-8">
+        <div class="line">
+            <div class=" l-10 center welcome">
+                <h4>Welcome to first configuration Administration panel.</h4>
+                <p>This application for example, how I can using symfony framework for my different whims.</p>
+            </div>
+        </div>
+    </div>
+    <div class="l-12 ">
+        <a href="{{ path('configuration_database') }}" class="btn btn-info right navbar-inverse">Next</a>
+    </div>
+{% endblock %}

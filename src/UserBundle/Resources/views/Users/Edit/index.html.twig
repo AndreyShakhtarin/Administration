@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h3 class="text-center">Edit user</h3>
+    <table class="table-responsive margin-bottom">
+        <tbody>
+        {{ form_start( edit_form ) }}
+        <tr>
+            <th>{{ form_label( edit_form.name ) }}</th>
+            <td>{{ form_widget( edit_form.name ) }}</td>
+        </tr>
+        <tr>
+            <th>{{ form_label( edit_form.surname ) }}</th>
+            <td>{{ form_widget( edit_form.surname ) }}</td>
+        </tr>
+        <tr>
+            <th>{{ form_label( edit_form.username ) }}</th>
+            <td>{{ form_widget( edit_form.username ) }}</td>
+        </tr>
+        <tr>
+            <th>{{ form_label( edit_form.email ) }}</th>
+            <td>{{ form_widget( edit_form.email ) }}</td>
+        </tr>
+        <tr>
+            <th>{{ form_label( edit_form.birthday ) }}</th>
+            <td>{{ form_widget( edit_form.birthday ) }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-center">
+        <input type="submit" href="{{ path( 'update_user', { "token" : token}) }}" class="btn btn-warning" value="Update">
+        {{ form_end( edit_form ) }}
+        <a href="{{ path( 'delete_user', { 'token' : token } ) }}" class="btn btn-danger">Delete</a>
+        <a href="{{ path( 'show_user', { "token" : token }) }}" class="btn btn-info">Cancel</a>
+    </div>
+
+{% endblock body %}

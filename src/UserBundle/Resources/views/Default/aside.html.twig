@@ -1,0 +1,20 @@
+    <aside class="s-12 l-3 bg-grey">
+        <h3 class="text-center">Sort</h3>
+        <div class="aside-nav">
+            <ul>
+                <li><a href="{{ path( "configuration_homepage", { "page" : current_page, "sort" : 'name' } ) }}">Name</a></li>
+                <li><a href="{{ path( "configuration_homepage", { "page" : current_page, "sort" : 'surname' } ) }}">Surname</a></li>
+                <li><a href="{{ path( "configuration_homepage", { "page" : current_page, "sort" : 'birthday' } ) }}">Birthday</a></li>
+                <li>
+                    <a>Gender</a>
+                    <ul>
+                        <li>
+                            <a href="{{ path( "configuration_homepage", { "page" : current_page, "sort" : "gender", "tag" : "male" } ) }}">Male</a></li>
+                        <li>
+                            <a href="{{ path( "configuration_homepage", { "page" : current_page, "sort" : "gender", "tag" : "female" } ) }}">Female</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </aside>

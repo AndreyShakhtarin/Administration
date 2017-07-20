@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+{% block aside %}
+    {% include '@User/Default/aside.html.twig' %}
+{% endblock %}
+{% block body %}
+    <section class="s-12 l-8">
+        <h4 class="bg-grey text-center">Welcome to the administration application!</h4>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% else %}
+            <p class="bg-info">Enter the username and password and enjoy it,
+            unless of course you are the administrator!)))
+                If you do not have access, you can only view the registered users.</p>
+        {% endif %}
+            <table class="table-responsive">
+                <thead>
+                <th>Name</th>
+                <th>Lastname</th>
+                <th>Birthday</th>
+                <th>Gender</th>
+                </thead>
+                {% for user in users %}
+                    <tbody>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <td>{{ user.birthday }}</td>
+                    <td>{{ user.gender }}</td>
+                    </tbody>
+                {% endfor %}
+            </table>
+        {% include '@User/Default/pagination.html.twig' %}
+    </section>
+{% endblock body %}

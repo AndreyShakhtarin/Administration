@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div class="l-12">
+        <div class="line text-center">
+            <h3>Create new User</h3>
+
+            {{ form_start( form ) }}
+
+            <div class="left s-12 l-6 ">
+                <table >
+                    <tbody>
+                    <tr>
+                        <th>{{ form_label( form.username ) }}</th>
+                        <td>{{ form_widget( form.username ) }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label( form.name ) }}</th>
+                        <td>{{ form_widget( form.name ) }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label( form.surname ) }}</th>
+                        <td>{{ form_widget( form.surname ) }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label( form.birthday) }}</th>
+                        <td>{{ form_widget( form.birthday ) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="s-12 l-6 right margin-bottom">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>{{ form_widget( form._token ) }}
+                        <th>{{ form_label( form.email ) }}</th>
+                        <td>{{ form_widget( form.email ) }}</td>
+                        {{ form_errors( form.email ) }}
+                    </tr>
+                    <tr>
+                        <th>{{ form_label( form.plainPassword.first ) }}</th>
+                        <td>{{ form_widget( form.plainPassword.first ) }}</td>
+                    </tr>
+                    <tr>
+
+                        <th>{{ form_label( form.plainPassword.second ) }}</th>
+                        <td>{{ form_widget( form.plainPassword.second ) }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label( form.gender) }}</th>
+                        <td>{{ form_widget( form.gender ) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="l-12 text-center ">
+                <input type="submit" class="btn btn-success right  " value="Create">
+                <a href="{{ path('user_homepage') }}" class="btn btn-info right ">Home</a>
+            </div>
+
+        </div>
+    </div>
+
+
+        {{ form_end( form ) }}
+
+
+{% endblock %}

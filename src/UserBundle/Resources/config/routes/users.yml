@@ -1,0 +1,32 @@
+#All right with permission SUPER ADMIN
+#show all user for operation (show, edit, delete)
+show_all_users:
+    path: /edit/{page}/{sort}/
+    defaults: { _controller: 'UserBundle:Default:shows', page: 0, sort: name, tag: null }
+#show selected user for
+show_user:
+    path: /show/{token}/
+    defaults: { _controller: 'UserBundle:Default:show' }
+#create new user
+create_user:
+    path: /create/
+    defaults: { _controller: UserBundle:Default:create }
+#edit user for update data
+edit_user:
+    path: /edit/{token}/
+    defaults: { _controller: 'UserBundle:Default:edit' }
+#update user with data from path edit_user
+update_user:
+    path: /{token}/update/
+    defaults: { _controller: UserBundle:Default:update }
+    requirements: { _method: post|put }
+#delete user form database
+delete_user:
+    path: /{token}/delete/
+    defaults: { _controller: UserBundle:Default:delete }
+    requirements: { _method: post|put }
+#return error if user have want delete from database a user have permission SUPER ADMIN
+error_admin:
+    path: /error_admin/
+    defaults: { _controller: UserBundle:Default:errorAdmin  }
+

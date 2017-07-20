@@ -1,0 +1,96 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <h3 class="text-center">Registration New User</h3>
+    <div class="l-12 register left margin-bottom">
+
+        {{ form_start( form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+        <div>
+            <div class="l-6">
+                . {{ form_errors( form.username ) }}
+            </div>
+            <div class="l-6">
+                . {{ form_errors( form.email ) }}
+            </div>
+        </div>
+        <div class="l-12">
+            <table class="table l-6">
+                <tbody>
+                        <tr>
+                            <td>
+                                {{ form_label( form.username ) }}
+                            </td>
+                            <td>
+                                {{ form_widget( form.username ) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ form_label( form.name ) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.name ) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ form_label( form.surname ) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.surname ) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ form_label( form.birthday) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.birthday ) }}
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table right l-6">
+                <tbody>
+                        <tr>
+                            <th>
+                                {{ form_label( form.email ) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.email ) }}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ form_label( form.plainPassword.first ) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.plainPassword.first ) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ form_label( form.plainPassword.second ) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.plainPassword.second ) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ form_label( form.gender ) }}
+                            </th>
+                            <td>
+                                {{ form_widget( form.gender ) }}
+                            </td>
+                        </tr>
+                    </tbody>
+            </table>
+        </div>
+        <div class="l-offset-10">
+            <input id="_submit" type="submit" class="btn btn-success"  value="{{ 'registration.submit'|trans }}" />
+        </div>
+        {{ form_end( form ) }}
+    </div>
+
+{% endblock %}

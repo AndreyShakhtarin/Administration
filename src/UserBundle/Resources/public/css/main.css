@@ -1,0 +1,74 @@
+.logo {
+    max-width: 290% !important;
+    padding-top: 7px;
+    margin-top: 10px;
+}
+.welcome {
+    padding-top: 30px;
+}
+
+.cl-olivie {
+    color: olive;
+}
+.block {
+    display: block;
+}
+
+#_submit {
+    color: black;
+}
+
+input#username, input#password {
+    border: solid 1px !important;
+    border-radius: 5px;
+}
+
+input#_submit{
+    border: solid 2px gainsboro!important;
+    border-radius: 5px;
+    box-shadow: gainsboro;
+}
+
+input#_submit:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+.register {
+    padding-top: 5%!important;
+}
+
+.bg-info {
+    background-color: #9acfea;
+    color: #286090;
+    padding: 10px;
+    border: 1px solid royalblue ;
+    border-radius: 5px;
+}
+
+.bg-danger {
+    background-color: #ce8483;
+    color: darkred;
+    padding: 10px;
+    border: 1px solid firebrick ;
+    border-radius: 5px;
+}
+
+.cl-pagination {
+    background-color: #152761;
+}
+
+.bg-grey {
+    background-color: #F0F0D0;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.padding-ob {
+    padding: 0 10px;
+}
+
+.width-email {
+    width: 43.09%;
+}
+

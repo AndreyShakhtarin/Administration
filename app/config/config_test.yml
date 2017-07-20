@@ -1,0 +1,48 @@
+imports:
+    - { resource: config_dev.yml }
+#    - { resource: security.yml  }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        collect: false
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    disable_delivery: true
+
+security:
+    providers:
+            in_memory:
+                  memory: ~
+            fos_userbundle:
+                id: fos_user.user_provider.username
+
+
+
+
+    firewalls:
+        # replace 'main' by the name of your own firewall
+        main:
+                            pattern: ^/
+                            form_login:
+                                provider: fos_userbundle
+                                csrf_token_generator: security.csrf.token_manager
+
+                            logout:       true
+                            anonymous:    true
+#fos_user:
+#    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+#    firewall_name: main
+#    user_class: UserBundle\Entity\User
+#    from_email:
+#        address: "%mailer_user%"
+#        sender_name: "%mailer_user%"
+#    registration:
+#            form:
+#                type: UserBundle\Form\RegistrationType

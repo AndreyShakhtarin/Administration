@@ -1,0 +1,12 @@
+<span class="l-12 bg-grey pagination pagination-sm">
+    <div class="text-center l-9">
+        <a class="btn-sm cl-pagination" href="{{ path("configuration_homepage", { "page" : "0" , "sort" : sort, "tag" : tag}) }}"> &#171;1 </a>
+        <a class="padding-ob" href="{% if current_page  != 0 %} {{ path("configuration_homepage", { "page" : current_page - 1, "sort" : sort, "tag" : tag }) }} {% endif %}">  <b> < </b>  </a>
+        <b class="btn-sm btn-info">{{ current_page + 1 }}</b>
+        <a class="padding-ob" href="{% if current_page  != count - 1 %} {{ path("configuration_homepage", { "page" : current_page + 1, "sort" : sort, "tag" : tag }) }} {% endif %}"> <b> ></b> </a>
+        <a class="btn-sm cl-pagination" href="{{ path("configuration_homepage", { "page" : count -1, "sort" : sort, "tag" : tag }) }}"> {{ count  }}&#187; </a>
+    </div>
+    <div class=" l-3">
+        <p class="right cl-olivie"> All Pages: <strong> {{ count  }} </strong></p>
+    </div>
+</span>
