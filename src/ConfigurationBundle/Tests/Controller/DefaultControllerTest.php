@@ -201,15 +201,15 @@ class DefaultControllerTest extends WebTestCase
         $this->em->flush();
     }
 
-    public function loadFixture()
-    {
-        $client = static::createClient();
-        $loader = new \Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader($client->getContainer());
-        $loader->loadFromDirectory(static::$kernel->locateResource('@UserBundle/DataFixtures/ORM'));
-        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger($this->em);
-        $executor = new \Doctrine\Common\DataFixtures\Executor\ORMExecutor($this->em, $purger);
-        $executor->execute($loader->getFixtures());
-    }
+//    public function loadFixture()
+//    {
+//        $client = static::createClient();
+//        $loader = new \Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader($client->getContainer());
+//        $loader->loadFromDirectory(static::$kernel->locateResource('@UserBundle/DataFixtures/ORM'));
+//        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger($this->em);
+//        $executor = new \Doctrine\Common\DataFixtures\Executor\ORMExecutor($this->em, $purger);
+//        $executor->execute($loader->getFixtures());
+//    }
 
     protected function tearDown()
     {

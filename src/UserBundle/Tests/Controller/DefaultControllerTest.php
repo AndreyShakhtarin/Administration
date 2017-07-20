@@ -9,117 +9,80 @@
 namespace UserBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Input\ArrayInput;
-use Doctrine\Bundle\DoctrineBundle\Command\DropDatabaseDoctrineCommand;
-use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\CreateSchemaDoctrineCommand;
+use UserBundle\Entity\User;
 
 class DefaultControllerTest extends WebTestCase
 {
 
     private $em;
-    private $application;
+
     public function setUp()
     {
         static::$kernel = static::createKernel();
         static::$kernel->boot();
 
-//        $this->application = new Application(static::$kernel);
-
-
-//        $command = new DropDatabaseDoctrineCommand();
-//        $this->application->add($command);
-//        $input = new ArrayInput(array(
-//            'command' => 'doctrine:database:drop',
-//            '--force' => true
-//        ));
-//        $command->run($input, new NullOutput());
-//
-//
-//        $connection = $this->application->getKernel()->getContainer()->get('doctrine')->getConnection();
-//        if ($connection->isConnected()) {
-//            $connection->close();
-//        }
-//
-//        $command = new CreateDatabaseDoctrineCommand();
-//        $this->application->add($command);
-//        $input = new ArrayInput(array(
-//            'command' => 'doctrine:database:create',
-//        ));
-//        $command->run($input, new NullOutput());
-//
-//
-//        $command = new CreateSchemaDoctrineCommand();
-//        $this->application->add($command);
-//        $input = new ArrayInput(array(
-//            'command' => 'doctrine:schema:create',
-//        ));
-//        $command->run($input, new NullOutput());
-
-
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
 
-//        $client = static::createClient();
-//        $loader = new \Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader($client->getContainer());
-//        $loader->loadFromDirectory(static::$kernel->locateResource('@UserBundle/DataFixtures/ORM'));
-//        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger($this->em);
-//        $executor = new \Doctrine\Common\DataFixtures\Executor\ORMExecutor($this->em, $purger);
-//        $executor->execute($loader->getFixtures());
     }
 
     public function testShows( $page = 0, $sort = 'name', $tag = null )
     {
 
         $client = static::createClient( );
+
+        //      check permission for any user
         $crawler = $client->request('GET', "/users/edit/$page/$sort/");
+        $this->assertEquals( 302, $client->getResponse()->getStatusCode());
 
+        //      create Super Admin
+        $this->createAdmin();
+        $admin = $this->getAdmin();
+
+        //      login for admin
+        $crawler = $client->request( 'GET', "/");
+        $client = $this->login( $admin, $client, $crawler );
+
+        //      check wish permission Super Admin
+        $crawler = $client->request('GET', "/users/edit/$page/$sort/");
         $this->assertEquals( 200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($crawler->filter('.users th.username:contains("username")')->count() == 0);
 
-        $this->assertContains(
-            "Show",
-            $client->getResponse()->getContent()
-        );
+        $_token = $admin->getConfirmationToken();
 
-        $users = $this->em->createQuery( 'Select u FROM UserBundle:User u')->getResult();
-        $_users = $this->em->getRepository( 'UserBundle:User')->findByAll( $page, $sort, $tag );
-        $this->assertCount(count($users), $_users['all_users']);
-
-
+        //    delete admin from database
+        $this->removedUser( $admin );
     }
 
-    public function testShow( $token = '' )
+    public function testShow( $token = 'token' )
     {
-        $client = static::createClient();
+        $admin = $this->quickTest( 'show' );
 
-        $user = $this->em->createQuery( 'Select u FROM UserBundle:User u')->setMaxResults( 1 )->getResult();
-
-        $token = $this->getUser( )['token'];
-        $name  = $this->getUser( )['name'];
-
-
-        $crawler = $client->request( 'GET', "/users/show/$token/");
-
-        $this->assertEquals(
-            1,
-            $crawler->filter("html:contains($name)")->count()
-        );
-        $this->assertEquals( 200, $client->getResponse()->getStatusCode());
-
+        //      delete admin from database
+        $this->removedUser( $admin );
     }
 
     public function testCreate()
     {
         $client = static::createClient();
-        $crawler = $client->request( 'GET', "/users/create/");
 
-        $this->assertTrue($crawler->filter('h3')->count() > 0);
+        //      check permission for any user
+        $crawler = $client->request( 'GET', "/users/create/");
+        $this->assertEquals( 302, $client->getResponse()->getStatusCode());
+
+        //      create Super Admin
+        $this->createAdmin();
+        $admin = $this->getAdmin();
+
+        //      login for admin
+        $crawler = $client->request( 'GET', "/");
+        $client = $this->login( $admin, $client, $crawler );
+
+        //      check for admin
+        $crawler = $client->request( 'GET', "/users/create/");
         $this->assertEquals( 200, $client->getResponse()->getStatusCode());
 
+        //      submit form
         $user = array(
             'fos_user_registration_form[username]'              => md5(uniqid('adminTest') . rand(0, 9999)),
             'fos_user_registration_form[name]'                  => md5(uniqid('adminTest') . rand(0, 9999)),
@@ -136,64 +99,131 @@ class DefaultControllerTest extends WebTestCase
         $form = $crawler->selectButton('Create')->form();
         $crawler = $client->submit($form, $user);
 
+        //      delete Super Admin from db
+        $this->removedUser( $admin );
     }
 
     public function testEdit(  $token = 'token' )
     {
-        $client = static::createClient( );
-        $_token = $this->getUser( )[ 'token' ];
+        $admin = $this->quickTest( 'edit' );
 
-        $crawler = $client->request( 'GET', "/users/edit/$_token/" );
-        $this->assertTrue( $crawler->filter( 'h3' )->count( ) > 0 );
-        $this->assertEquals( 200, $client->getResponse()->getStatusCode());
-
-        $crawler = $client->request( 'GET', "/users/edit/$token/" );
-        $this->assertTrue( $crawler->filter( 'html:contains( "User not found." )' )->count( ) == 1 );
-
-        $_tokenAdmin = $this->getAdmin();
-        $crawler = $client->request( 'GET', "/users/$_tokenAdmin/update/" );
-
+        //     delete Super Admin from db
+        $this->removedUser( $admin );
     }
 
     public function testUpdate( $token = 'token' )
     {
-        $client = static::createClient( );
-        $client2 = static::createClient( );
-        $_token = $this->getUser( )[ 'token' ];
-
-        $crawler = $client->request( 'GET', "/users/$_token/update/" );
-
-        $this->assertTrue( $crawler->filter( 'h3' )->count( ) > 0 );
-        $this->assertEquals( 200, $client->getResponse()->getStatusCode());
-
-        $crawler = $client->request( 'GET', "/users/$token/update/" );
-        $this->assertTrue( $crawler->filter( 'html:contains( "User not found." )' )->count( ) == 1 );
-
-        $_tokenAdmin = $this->getAdmin();
-        $crawler = $client->request( 'GET', "/users/$_tokenAdmin/update/" );
+        $admin = $this->quickTest( "update", true );
+        //      delete Super Admin from db
+        $this->removedUser( $admin );
     }
 
     public function testDelete( $token = 'token' )
     {
-        $client = static::createClient( );
-        $_token = $this->getUser( )[ 'token' ];
-
-        $crawler = $client->request( 'GET', "/users/$_token/delete/" );
-        $this->assertTrue( $crawler->filter( 'h3' )->count( ) > 0 );
-
-        $crawler = $client->request( 'GET', "/users/$token/delete/" );
-        $this->assertTrue( $crawler->filter( 'html:contains( "User not found." )' )->count( ) == 1 );
-
-        $_tokenAdmin = $this->getAdmin();
-        $crawler = $client->request( 'GET', "/users/$_tokenAdmin/delete/" );
+        $admin = $this->quickTest( 'delete', true );
+        //      delete Super Admin from db
+        $this->removedUser( $admin );
     }
 
     public function testErrorAdmin()
     {
         $client = static::createClient( );
+
+        //      create Super Admin
+        $this->createAdmin();
+        $admin = $this->getAdmin();
+        $_token = $admin->getConfirmationToken();
+
+        //      check access for any user
         $crawler = $client->request( 'GET', "/users/error_admin/" );
-        $this->assertTrue( $crawler->filter( 'h3' )->count( ) > 0 );
+        $this->assertEquals( 302, $client->getResponse()->getStatusCode());
+
+        //      login for admin
+        $crawler = $client->request( 'GET', "/" );
+        $client = $this->login( $admin, $client, $crawler );
+
+        //      check permission for admin
+        $crawler = $client->request( 'GET', "/users/error_admin/" );
         $this->assertEquals( 200, $client->getResponse()->getStatusCode());
+
+        //      delete Super Admin from db
+        $this->removedUser( $admin );
+    }
+
+    private function quickTest( $path, $notFound = false )
+    {
+        $client = static::createClient( );
+        //      create Super Admin
+        $this->createAdmin();
+        $admin = $this->getAdmin();
+        $token = $admin->getConfirmationToken();
+
+        //      check access for any user
+        $crawler = $client->request( 'GET', "/users/$path/$token/" );
+        $this->assertEquals( 302, $client->getResponse()->getStatusCode());
+
+        //      login for admin
+        $crawler = $client->request( 'GET', "/");
+        $client = $this->login( $admin, $client, $crawler );
+
+        if ( $notFound )
+        {
+            //      check for not found user
+            $crawler = $client->request( 'GET', "/users/$path/token/" );
+            $this->assertTrue( $crawler->filter( 'html:contains( "User not found." )' )->count( ) == 1 );
+
+            //      check access user
+            $_token = $this->getUser()[ 'token' ];
+            $crawler = $client->request( 'GET', "/users/$path/$_token/" );
+            $this->assertEquals( 200, $client->getResponse()->getStatusCode());
+
+            //      check permission for admin
+            $crawler = $client->request( 'GET', "/users/$path/$token/" );
+            $this->assertEquals( 302, $client->getResponse()->getStatusCode());
+        }
+        else
+        {
+            //      check permission for admin
+            $crawler = $client->request( 'GET', "/users/$path/$token/" );
+            $this->assertEquals( 200, $client->getResponse()->getStatusCode());
+        }
+
+        return $admin;
+    }
+
+
+    public function login( $admin, $client, $crawler )
+    {
+        $_admin = array(
+            '_username' => $admin->getUsername(),
+            '_password' => 111
+        );
+        $form = $crawler->selectButton( 'Login' )->form($_admin);
+        $crawler = $client->submit($form);
+
+        return $client;
+    }
+    public function createAdmin()
+    {
+        $admin = new User();
+        $admin->setName( 'adminTest' );
+        $admin->setUsername( 'adminTest' );
+        $admin->setSurname( 'adminTest' );
+        $admin->setBirthday( new \DateTime( date( 'Y-m-d', 11111111111 ) ) );
+        $admin->setSuperAdmin( true );
+        $admin->setEnabled( 1 );
+        $admin->setGender( 0 );
+        $admin->setEmail(  'admintest@gmail.com' );
+        $admin->setConfirmationToken( md5(uniqid( $admin->getEmail( ) ) . rand(1,99999) ) );
+        $admin->setPassword( '$2y$13$/bDqcNr/MFKeAawNhlnM/u110urHn8Pbg5FdVL/hTXiMJm4k0m/YO' );
+        $this->em->persist( $admin );
+        $this->em->flush();
+    }
+
+    public function removedUser( $user )
+    {
+        $this->em->remove( $user );
+        $this->em->flush( $user );
     }
 
     public function getUser()
@@ -211,19 +241,9 @@ class DefaultControllerTest extends WebTestCase
 
     public function getAdmin()
     {
-        $users = $this->em->getRepository( 'UserBundle:User' )->findAll( );
+        $admin = $this->em->getRepository( 'UserBundle:User' )->findOneByName( 'adminTest' );
 
-        foreach ( $users as $key=>$user )
-        {
-            $roles = $user->getRoles();
-            foreach ( $roles as $key=>$role)
-            if ( $role == 'ROLE_SUPER_ADMIN' )
-            {
-                $admin = $user;
-            }
-        }
-        $token =  $admin->getConfirmationToken( );
-        return $token;
+        return $admin;
     }
 
 
