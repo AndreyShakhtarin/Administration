@@ -69,19 +69,19 @@ fos_user:
     firewall_name: main
     user_class: UserBundle\Entity\User
     from_email:
-        address: "%mailer_user%"
-        sender_name: "%mailer_user%"
+        address: andreytestpanel@gmail.com
+        sender_name: Administration
     registration:
+            confirmation:
+                enabled: true
             form:
                 type: UserBundle\Form\RegistrationType
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    spool: { type: memory }
+    transport: gmail
+    username: andreytestpanel@gmail.com
+    password: 183729qw
 
 assetic:
     debug:          '%kernel.debug%'

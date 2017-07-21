@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
+use UserBundle\Controller\AbstractSecurityController;
 use UserBundle\Entity\User;
 
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -15,6 +16,8 @@ use FOS\UserBundle\Event\FormEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 
 /**
@@ -22,13 +25,13 @@ use FOS\UserBundle\Controller\SecurityController as BaseController;
  * @package ConfigurationBundle\Controller
  * Base configuration controller
  */
-class DefaultController extends BaseController
+class DefaultController extends AbstractSecurityController
 {
     /**
      * Array (last user, current user, token)
      * @var $data array
      */
-    public static $data;
+
 
     private $configs = array( );
 
@@ -58,7 +61,8 @@ class DefaultController extends BaseController
 
         if ( $hasAdmin )
         {
-            return $this->renderToHomepage( $request, $page, $sort, $tag );
+
+            return $this->homepage( $request, $page, $sort, $tag );
         }
 
         return $this->render( 'ConfigurationBundle:Welcome:index.html.twig', array(
@@ -97,7 +101,7 @@ class DefaultController extends BaseController
         $hasAdmin = $this->checkAdmin( );
         if ( $hasAdmin )
         {
-            return $this->renderToHomepage( $request );
+            return $this->homepage( $request );
         }
         else
         {
@@ -128,16 +132,13 @@ class DefaultController extends BaseController
         $form->setData($user);
 
         $form->handleRequest($request);
-
-
-
+        
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
                 $data = $form->getData();
-                $user->setConfirmationToken( sha1( $data->getEmail() . rand( 0, 9999) ));
 
                 $userManager->updateUser($user);
 
@@ -228,8 +229,21 @@ class DefaultController extends BaseController
      * @param $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function renderToHomepage( $request, $page, $sort, $tag)
+    private function homepage( $request, $page, $sort, $tag )
     {
+
+        if ( $sort == 'check-email')
+        {
+           return $this->checkEmail( $request, $sort );
+        }
+        if ( $sort == 'confirm')
+        {
+            return $this->confirm( $request, $tag );
+        }
+        if ( $sort == 'confirmed' )
+        {
+            return $this->confirmed();
+        }
 
         $this->loginAction( $request );
         $users = $this->getDoctrine( )->getRepository( 'UserBundle:User')->findByAll( $page, $sort, $tag );
@@ -241,8 +255,9 @@ class DefaultController extends BaseController
             $user->setBirthday( $date );
         }
 
+
         return $this->render('UserBundle:Default:index.html.twig', array(
-            'data'          => self::$data,
+            'data'          => $this->inst( $request),
             'current_page'  => $page,
             'users'         => $users['users'],
             'sort'          => $sort,
@@ -251,24 +266,64 @@ class DefaultController extends BaseController
         ));
     }
 
-
-
-    /**
-     * Override parent method.
-     * @param array $data
-     */
-    public function renderLogin(array $data)
+    private function checkEmail( $request )
     {
-        if ( ! empty( $data )){
-            self::$data = $data;
+
+        $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
+        if (empty($email)) {
+            return new RedirectResponse($this->get('router')->generate('configuration_homepage'));
         }
+
+        $this->get('session')->remove('fos_user_send_confirmation_email/email');
+        $user = $this->get('fos_user.user_manager')->findUserByEmail($email);
+
+        if (null === $user) {
+            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
+        }
+
+        return $this->render( 'UserBundle:Registration:check_email.html.twig', array(
+            'data' => $this->inst( $request ),
+            'user' => $user,
+        ) );
+    }
+
+    private function confirm( $request, $token)
+    {
+        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+        $userManager = $this->get('fos_user.user_manager');
+
+        $user = $userManager->findUserByConfirmationToken($token);
+
+        if (null === $user) {
+            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
+        }
+
+        /** @var $dispatcher EventDispatcherInterface */
+        $dispatcher = $this->get('event_dispatcher');
+
+        $user->setConfirmationToken(null);
+        $user->setEnabled(true);
+
+        $event = new GetResponseUserEvent($user, $request);
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
+
+        $userManager->updateUser($user);
+
+        if (null === $response = $event->getResponse()) {
+            $url = $this->generateUrl('fos_user_registration_confirmed');
+            $response = new RedirectResponse($url);
+        }
+
+        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+
+        return $response;
     }
 
     /**
      * Override parent method for confirmed
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function confirmedAction()
+    public function confirmed()
     {
         return $this->render('UserBundle:Registration:confirmed.html.twig', array(
             'user' => $this->getUser(),
@@ -345,7 +400,6 @@ class DefaultController extends BaseController
         }
         return $config;
     }
-
 
     /**
      * Check parameter

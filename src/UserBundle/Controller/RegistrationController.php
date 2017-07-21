@@ -16,11 +16,16 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use UserBundle\Controller\AbstractSecurityController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use UserBundle\Entity\User;
+use UserBundle\Form\RegistrationType;
 
 class RegistrationController extends AbstractSecurityController
 {
-    public function registerAction(Request $request)
+
+    public function registerAction(Request $request )
     {
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -44,12 +49,13 @@ class RegistrationController extends AbstractSecurityController
 
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-                $user->setConfirmationToken(md5  ( uniqid( $user->getEmail(). rand( 0, 99999 ) ) ) );
-                $userManager->updateUser( $user );
+
+                $userManager->updateUser($user);
 
                 /*****************************************************
                  * Add new functionality (e.g. log the registration) *
@@ -59,7 +65,7 @@ class RegistrationController extends AbstractSecurityController
                 );
 
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->generateUrl('register_confirmed');
+                    $url = $this->generateUrl('fos_user_registration_confirmed');
                     $response = new RedirectResponse($url);
                 }
 
@@ -75,17 +81,10 @@ class RegistrationController extends AbstractSecurityController
                 return $response;
             }
         }
-        $data = array( 'csrf_token' => '', 'last_username' => '',  );
+
         return $this->render('UserBundle:Registration:register.html.twig', array(
             'form' => $form->createView(),
-            'data' => $data,
+            'data' => $this->inst( $request ),
         ));
-    }
-
-    function confirmedAction()
-    {
-       return $this->render('UserBundle:Registration:confirmed.html.twig', array(
-           'user' => $this->getUser(),
-       ));
     }
 }

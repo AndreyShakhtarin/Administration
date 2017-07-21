@@ -4,8 +4,10 @@ user_homepage:
     defaults: { _controller: UserBundle:Default:shows, page: 0, sort: name, tag: null }
 #registration new user
 register:
-    path:     /register/
+    path:     register/
     defaults: { _controller: UserBundle:Registration:register }
+
+
 #login user for next step
 login:
     path:     /login
@@ -18,3 +20,4 @@ users:
 register_confirmed:
     path: /register/confirmed/
     defaults: { _controller: UserBundle:Registration:confirmed }
+

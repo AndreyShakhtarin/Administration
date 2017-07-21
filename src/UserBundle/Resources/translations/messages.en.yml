@@ -1,0 +1,8 @@
+registration:
+    email:
+        subject: '<b>Welcome %username% in application Administration!</b>'
+        message:  To finish activating your account - please visit <b> %confirmationUrl% </b>
+                  This link can only be used once to validate your account.
+                  Regards,the Team.
+    check_email:  An email has been sent to <b> %email%. </b>  It contains an activation link you must click to activate your account.
+                  This is grate!

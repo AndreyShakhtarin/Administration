@@ -13,3 +13,11 @@ Gender: Gender
 male: Male
 female: Female
 other: Other
+registration:
+    email:
+        subject: 'Welcome %username% in application Administration!'
+        message:  To finish activating your account - please visit  %confirmationUrl%
+                  This link can only be used once to validate your account.
+                  Regards,the Team.
+    check_email:  An email has been sent to  %email%.   It contains an activation link you must click to activate your account.
+                  This is grate!

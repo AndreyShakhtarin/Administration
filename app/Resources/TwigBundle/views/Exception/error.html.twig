@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h3 class="text-center ">Page not found</h3>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {# ... #}
+    {% endif %}
+
+    <p class="text-center bg-info l-8 center">
+        The requested page couldn't be located. Checkout for any URL
+        misspelling or <a href="{{ path('configuration_homepage') }}">return to the homepage</a>.
+    </p>
+{% endblock %}

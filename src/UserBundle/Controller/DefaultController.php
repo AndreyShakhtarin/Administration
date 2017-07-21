@@ -15,6 +15,8 @@ use UserBundle\Controller\AbstractSecurityController as BaseController;
 use UserBundle\Entity\User;
 use UserBundle\Form\EditType;
 
+    
+
 /**
  * Class DefaultController
  * Base controller for Super Admin user.
@@ -242,6 +244,40 @@ class DefaultController extends BaseController
         return $this->render( 'UserBundle:Users:Delete/error.html.twig', array(
             'data'  => $this->inst( $request )
         ) );
+    }
+    
+    public function sendAction( $name  )
+    {
+
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('andreytestpanel@gmail.com')
+            ->setTo('dushamoil1988@gmail.com')
+            ->setBody(
+                $this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'Emails/registration.html.twig',
+                    array('name' => $name)
+                ),
+                'text/html'
+            )
+            /*
+             * If you also want to include a plaintext version of the message
+            ->addPart(
+                $this->renderView(
+                    'Emails/registration.txt.twig',
+                    array('name' => $name)
+                ),
+                'text/plain'
+            )
+            */
+        ;
+
+//        $mailer->send($message);
+
+        // or, you can also fetch the mailer service this way
+         $this->get('mailer')->send($message);
+
+        return $this->render( 'UserBundle:Users:Emails/index.html.twig');
     }
 
 }
