@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="93937f42-4419-4c47-87c2-e1de61ab2fd2" name="Default" comment="administration 1.2" />
-    <list default="true" id="677111c9-71cf-49fb-b517-51e974194961" name="EmailConfirmation" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin5.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin6.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/img/presintation/admin7.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/blade.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/css/owl/owl.carousel.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/css/owl/owl.theme.default.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/js/main.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/public/js/owl/owl.carousel.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Homepage/aside.html.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Homepage/aside_homepage.html.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Homepage/homepage.html.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml" />
+    <list default="true" id="677111c9-71cf-49fb-b517-51e974194961" name="EmailConfirmation" comment="EmailConfirmation">
       <change type="DELETED" beforePath="$PROJECT_DIR$/web/cov/AppBundle/AppBundle.php.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web/cov/AppBundle/Controller/DefaultController.php.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web/cov/AppBundle/Controller/dashboard.html" afterPath="" />
@@ -31,22 +15,8 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/web/cov/WelcomeBundle/WelcomeBundle.php.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web/cov/WelcomeBundle/dashboard.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/web/cov/WelcomeBundle/index.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/admin.iml" afterPath="$PROJECT_DIR$/.idea/admin.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/security.yml" afterPath="$PROJECT_DIR$/app/config/security.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Controller/AbstractSecurityController.php" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Controller/AbstractSecurityController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Controller/DefaultController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/config/routing.yml" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/config/routing.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Admin/index.html.twig" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Admin/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/DataBase/index.html.twig" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/DataBase/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Default/index.html.twig" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Default/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Welcome/index.html.twig" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/Welcome/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ConfigurationBundle/Service/CreateUsers.php" afterPath="$PROJECT_DIR$/src/ConfigurationBundle/Service/CreateUsers.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Entity/User.php" afterPath="$PROJECT_DIR$/src/UserBundle/Entity/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/User.orm.yml" afterPath="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/User.orm.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Resources/config/routing.yml" afterPath="$PROJECT_DIR$/src/UserBundle/Resources/config/routing.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Resources/public/css/main.css" afterPath="$PROJECT_DIR$/src/UserBundle/Resources/public/css/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml" afterPath="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/4547de3.css" afterPath="$PROJECT_DIR$/web/css/4547de3.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/b0528d6.css" afterPath="$PROJECT_DIR$/web/css/b0528d6.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/b0528d6_part_1_bootstrap_1.css" afterPath="$PROJECT_DIR$/web/css/b0528d6_part_1_bootstrap_1.css" />
@@ -146,14 +116,14 @@
       <file leaf-file-name="Users.orm.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="26" column="22" lean-forward="false" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
+            <state relative-caret-position="525">
+              <caret line="35" column="2" lean-forward="false" selection-start-line="35" selection-start-column="2" selection-end-line="35" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Users.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Users.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Users.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-3950">
@@ -163,7 +133,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/User.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-887">
@@ -304,8 +274,8 @@
         <option value="$PROJECT_DIR$/src/ConfigurationBundle/Resources/views/DataBase/index.html.twig" />
         <option value="$PROJECT_DIR$/src/ConfigurationBundle/Service/CreateUsers.php" />
         <option value="$PROJECT_DIR$/src/ConfigurationBundle/Controller/DefaultController.php" />
-        <option value="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml" />
         <option value="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/User.orm.yml" />
+        <option value="$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml" />
       </list>
     </option>
   </component>
@@ -750,7 +720,7 @@
       <workItem from="1500660339762" duration="30630000" />
       <workItem from="1500728190057" duration="3280000" />
       <workItem from="1500732935603" duration="58000" />
-      <workItem from="1500733000693" duration="24031000" />
+      <workItem from="1500733000693" duration="24701000" />
     </task>
     <task id="LOCAL-00001" summary="administration 1.1">
       <created>1500593745338</created>
@@ -829,11 +799,18 @@
       <option name="project" value="LOCAL" />
       <updated>1500721344730</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="EmailConfirmation">
+      <created>1500759757016</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1500759757016</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="181076000" />
+    <option name="totallyTimeSpent" value="181746000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -880,7 +857,8 @@
     <MESSAGE value="administration 1.2" />
     <MESSAGE value="administration 1.3 with email confirmation" />
     <MESSAGE value="administration 1.2 confirmationEmail" />
-    <option name="LAST_COMMIT_MESSAGE" value="administration 1.2 confirmationEmail" />
+    <MESSAGE value="EmailConfirmation" />
+    <option name="LAST_COMMIT_MESSAGE" value="EmailConfirmation" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1253,18 +1231,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Users.php">
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/User.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3950">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="26" column="22" lean-forward="false" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
+        <state relative-caret-position="-887">
+          <caret line="129" column="8" lean-forward="false" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="86" />
           <folding />
         </state>
       </provider>
@@ -1277,10 +1247,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/User.php">
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Resources/config/doctrine/Users.orm.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-887">
-          <caret line="129" column="8" lean-forward="false" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="86" />
+        <state relative-caret-position="525">
+          <caret line="35" column="2" lean-forward="false" selection-start-line="35" selection-start-column="2" selection-end-line="35" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserBundle/Entity/Users.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3950">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>

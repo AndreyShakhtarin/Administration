@@ -27,3 +27,10 @@ UserBundle\Entity\Users:
           type: string
         token:
           type: string
+    manyToOne:
+      user:
+        targetEntity: User
+        inversedBy: users
+        joinColumn:
+          name: user_id
+          referencedColumnName: id
