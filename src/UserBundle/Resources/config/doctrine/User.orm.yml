@@ -19,4 +19,8 @@ UserBundle\Entity\User:
               type: string
         gender:
             type: string
+    oneToMany:
+      users:
+        targetEntity: Users
+        mappedBy: user
     lifecycleCallbacks: { }

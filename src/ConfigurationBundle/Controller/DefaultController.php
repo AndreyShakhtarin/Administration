@@ -29,20 +29,14 @@ class DefaultController extends AbstractSecurityController
      * Array (last user, current user, token)
      * @var $data array
      */
-
-
     private $configs = array( );
 
-    const  PARAMS = array(
-        'database_host',
-        'database_name',
-        'database_user',
-        'database_password',
-        'mailer_transport',
-        'mailer_host',
-        'mailer_user',
-        'mailer_password'
-    );
+    public function indexAction( Request $request )
+    {
+        return $this->render( 'ConfigurationBundle:Homepage:homepage.html.twig', array(
+            'data'  => $this->inst( $request ),
+        ));
+    }
 
     /**
      * Start page
@@ -64,7 +58,7 @@ class DefaultController extends AbstractSecurityController
         }
 
         return $this->render( 'ConfigurationBundle:Welcome:index.html.twig', array(
-            'flag' => 'welcome'
+            'data' => $this->inst( $request ),
         ));
     }
 
@@ -85,7 +79,7 @@ class DefaultController extends AbstractSecurityController
         $configs = $this->getConfigs();
         return $this->render('ConfigurationBundle:DataBase:index.html.twig', array(
             'configs'   => $configs,
-            'flag'      => 'database'
+            'data'      => $this->inst( $request ),
         ));
     }
 
@@ -96,15 +90,15 @@ class DefaultController extends AbstractSecurityController
      */
     public function adminAction( Request $request)
     {
-        $hasAdmin = $this->checkAdmin( );
-        if ( $hasAdmin )
-        {
-            return $this->helperRedirect( $request );
-        }
-        else
-        {
-            $this->setUp();
-        }
+//        $hasAdmin = $this->checkAdmin( );
+//        if ( $hasAdmin )
+//        {
+//            return $this->helperRedirect( $request );
+//        }
+//        else
+//        {
+////            $this->setUp();
+//        }
 
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -135,8 +129,12 @@ class DefaultController extends AbstractSecurityController
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
+
                 $data = $form->getData();
                 $user->setToken();
+
+                $this->setUp( $user->getToken() );
+
                 $userManager->updateUser($user);
 
                 /*****************************************************
@@ -164,10 +162,9 @@ class DefaultController extends AbstractSecurityController
             }
         }
 
-
         return $this->render( 'ConfigurationBundle:Admin:index.html.twig', array(
             'form' => $form->createView(),
-            'flag' => 'admin',
+            'data' => $this->inst( $request ),
         ) );
     }
 
@@ -177,11 +174,11 @@ class DefaultController extends AbstractSecurityController
      * Also create users.
      * @return bool
      */
-    public function setUp( )
+    public function setUp( $token )
     {
             $this->doCommand( array( 'command' => 'doctrine:database:create' ) );
             $this->doCommand( array( 'command' => 'doctrine:schema:update', '--force' => true ) );
-            $this->createUsers();
+            $this->createUsers( $token );
 //            $this->doCommand( array( 'command' => 'doctrine:fixture:load',  'y' ) );
 
         return true;
@@ -224,38 +221,10 @@ class DefaultController extends AbstractSecurityController
     /**
      * Create adn load users to database
      */
-    public function createUsers()
+    public function createUsers( $token )
     {
         $manager = $this->getDoctrine()->getManager();
-        $this->get( 'create_users')->createUsers( $manager );
-//        $users_male = array( 'Noah', 'Liam', 'William', 'Mason', 'James', 'Benjamin', 'Jacob', 'Michael',  'Elijah', 'Ethan', 'Alexander', 'Oliver', 'Lucas' );
-//        $users_female = array( 'Emma', 'Olivia', 'Ava', 'Sophia', 'Isabella', 'Mia', 'Charlotte', 'Abigail', 'Emily', 'Harper', 'Amelia', 'Evelyn', 'Elizabeth' );
-//        $users_surname = array( 'Smith', 'Jones', 'Brown', 'Johnson', 'Williams', 'Miller', 'Taylor', 'Wilson', 'Davis', 'White' );
-//        $users = array( 0 => $users_female, 1 => $users_male );
-//        for ( $i = 0; $i < 40; $i++)
-//        {
-//            $user = new User();
-//            $rand = rand( 0, 1 );
-//            $_users = $users[ $rand ];
-//            $key_n = array_rand( $_users, 1 );
-//            $key_l = array_rand( $users_surname, 1 );
-//
-//            $user->setName( $_users[$key_n] );
-//            $user->setUsername( $_users[$key_n] . md5($_users[$key_n] . rand(1,99999)));
-//            $user->setSurname( $users_surname[$key_l]);
-//            $time_r = rand( -199999999, 1400000000 );
-//            $born = date('Y-m-d', $time_r);
-//            $date = new \DateTime($born);
-//            $user->setToken();
-//            $user->setBirthday( $date );
-//            $user->setEnabled( 1 );
-//            $user->setGender( $rand );
-//            $user->setEmail( strtolower( $_users[$key_n] ). md5($_users[$key_n] . rand(0, 999999))  . '@gmail.com' );
-//            $user->setPassword( rand( 1, 1000 ));
-//
-//            $manager->persist( $user );
-//            $manager->flush();
-//        }
+        $this->get( 'create_users' )->createUsers( $manager, $token );
     }
 
     /**

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset( '/bundles/configuration/css/owl/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset( '/bundles/configuration/css/owl/owl.theme.default.min.css') }}">
+{% endblock stylesheets %}
+
+{% block aside %}
+    {% include '@Configuration/Homepage/aside_homepage.html.twig' %}
+{% endblock %}
+{% block body %}
+    <section class="s-12 l-7">
+        <div class=" bg-info padding">
+            <div class="step-configuration">
+                <h3 class="text-center cl-olivie">Welcome to admin panel "Administrator".</h3>
+            </div>
+            <div class="bg-grey padding">
+                <p>
+                    If you have not configured the project as a super Admin,
+                    offer you to perform the project configuration which creates fictitious users.
+                    You will be able to delete, add, and edit users.
+                </p>
+                <p>
+                    If you have created you can authenticate and get to work.
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock body %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset( '/bundles/configuration/js/owl/owl.carousel.min.js') }}"></script>
+{% endblock %}

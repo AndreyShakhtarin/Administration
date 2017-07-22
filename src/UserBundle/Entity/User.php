@@ -176,4 +176,43 @@ class User extends BaseUser
     {
         return $this->token;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $users;
+
+
+    /**
+     * Add user
+     *
+     * @param \UserBundle\Entity\Users $user
+     *
+     * @return User
+     */
+    public function addUser(\UserBundle\Entity\Users $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \UserBundle\Entity\Users $user
+     */
+    public function removeUser(\UserBundle\Entity\Users $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
 }

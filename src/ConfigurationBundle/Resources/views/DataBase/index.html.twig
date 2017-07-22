@@ -1,5 +1,15 @@
-{% extends "@Configuration/Default/index.html.twig" %}
+{% extends "base.html.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/bundles/configuration/js/main.js') }}"></script>
+{% endblock %}
+{% block aside %}
+    {% include '@Configuration/Homepage/aside.html.twig' %}
+{% endblock %}
 {% block body %}
+    <div class="text-center bg-info l-offset-2 l-5 margin-bottom">
+        <h3 class="cl-olivie shadows box-shadows">Check Configuration Database.</h3>
+    </div>
     <div class="l-8">
         <div class="line">
         {% if not configs.config %}
@@ -17,7 +27,7 @@
             </div>
         {% endif %}
             {% if configs.config %}
-                <div class="bg-info">
+                <div class="bg-info text-center l-offset-1">
                     <p>Your database has settings for the connection. If you agree with them go the next step by clicking "Next"</p>
                 </div>
             {% endif %}
@@ -26,6 +36,6 @@
     <div class="l-12 ">
 
         <a href="{{ path('configuration_admin') }}" class="btn btn-success right  navbar-inverse {% if not configs.config %} disabled {% endif %} " >Next</a>
-        <a href="{{ path('configuration_homepage') }}" class="btn btn-warning right  navbar-inverse">Previust</a>
+        <a href="{{ path('welcome') }}" class="btn btn-warning right  navbar-inverse">Previust</a>
     </div>
 {% endblock %}

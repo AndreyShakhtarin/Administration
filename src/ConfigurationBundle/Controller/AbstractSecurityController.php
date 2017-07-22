@@ -27,6 +27,22 @@ class AbstractSecurityController extends SecurityController
     protected $data;
 
     /**
+     * Array (last user, current user, token)
+     * @var $data array
+     */
+    private $configs = array( );
+
+    const  PARAMS = array(
+        'database_host',
+        'database_name',
+        'database_user',
+        'database_password',
+        'mailer_transport',
+        'mailer_host',
+        'mailer_user',
+        'mailer_password'
+    );
+    /**
      * Redirect for routes with registration
      * @param $request
      * @param $name

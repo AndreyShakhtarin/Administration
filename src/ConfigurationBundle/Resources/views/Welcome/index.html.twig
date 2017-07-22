@@ -1,5 +1,15 @@
-{% extends "@Configuration/Default/index.html.twig" %}
+{% extends "base.html.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/bundles/configuration/js/main.js') }}"></script>
+{% endblock %}
+{% block aside %}
+    {% include '@Configuration/Homepage/aside.html.twig' %}
+{% endblock %}
 {% block body %}
+    <div class="text-center bg-info l-offset-2 l-5 margin-bottom">
+        <h3 class="cl-olivie shadows box-shadows">  Welcome to Application!</h3>
+    </div>
     <div class="l-8">
         <div class="line">
             <div class=" l-10 center welcome">

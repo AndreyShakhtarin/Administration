@@ -1,0 +1,46 @@
+{% block aside %}
+    <aside class="s-12 l-5 bg-info box-shadows margin-bottom">
+        <div class="owl-carousel owl-theme text-center">
+            <div class="item">
+                <h4>Welcome to Administrator!</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin1.png') }}">
+            </div>
+            <div class="item">
+                <h4>Here You can create a user.</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin4.png') }}">
+            </div>
+            <div class="item">
+                <h4>Update and delete any user.</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin3.png') }}">
+            </div>
+            <div class="item"><h4>Show data user</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin2.png') }}">
+            </div>
+            <div class="item">
+                <h4>If you already.</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin5.png') }}">
+            </div>
+            <div class="item">
+                <h4>Go to link Registration</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin6.png') }}">
+            </div>
+            <div class="item">
+                <h4>You must to create your Admin's account!</h4>
+                <img src="{{ asset( '/bundles/configuration/img/presintation/admin7.png') }}">
+            </div>
+        </div>
+        <script>
+            $JQuery =$.noConflict();
+            $JQuery(document).ready(function(){
+                $JQuery('.owl-carousel').owlCarousel({
+                    items:1,
+                    loop:true,
+                    autoplay:true,
+                    autoplayTimeout:3000,
+                    dots: false
+                })
+            });
+
+        </script>
+    </aside>
+{% endblock %}

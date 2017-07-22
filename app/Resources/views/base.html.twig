@@ -33,7 +33,7 @@
                     <p class="nav-text">Custom menu text</p>
                     <ul class="center">
                         <li class="">
-                            <a href="{{ path( 'user_homepage' ) }}">Home <i class="icon-sli-home "></i> </a>
+                            <a href="{{ path( 'homepage' ) }}">Home <i class="icon-sli-home "></i> </a>
                         </li>
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                             <li class="right">
@@ -50,7 +50,7 @@
                             </li>
                         {% else %}
                             <li>
-                                <a href="{{ path('register') }}">Registration</a>
+                                <a href="{{ path('welcome') }}">Registration</a>
                             </li>
                             <form class="l-6" action="{{ path("fos_user_security_check") }}" method="post">
                                 {% if data.csrf_token %}
@@ -103,15 +103,13 @@
             </div>
         </div>
     </footer>
-    {#<script type="text/javascript" src="js/responsee.js"></script>#}
-
-
         {% block javascripts %}
             {% javascripts
                 'bundles/user/js/responsee.js'
                 'bundles/user/js/bootstrap.js'
             %}
                 <script src="{{ asset_url }}"></script>
+            <script src="{{ asset( '/bundles/configuration/js/owl/owl.carousel.min.js') }}"></script>
             {% endjavascripts %}
         {% endblock %}
 

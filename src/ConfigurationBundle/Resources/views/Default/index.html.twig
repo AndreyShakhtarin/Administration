@@ -18,6 +18,9 @@
         {% endjavascripts %}
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     {% endblock javascript %}
+    <script>
+
+    </script>
     <link rel="icon" type="image/x-icon" href="{{ asset('bundles/user/img/Setting-icon.png') }}" />
 </head>
 
@@ -40,40 +43,7 @@
     <div class="box  margin-bottom">
         <div class="margin">
             <!-- ASIDE NAV 1 -->
-            <div class="text-center">
-                <h3>Administration Application!</h3>
-            </div>
-            <aside class="s-12 l-3">
-                <h4 class="text-center"><i class="icon-settings cl-olivie"></i> Step Configuration</h4>
-                <div class="aside-nav">
-                    <ul>
-                        <li>
-                            <a>
-                                {% if flag == 'welcome' %}
-                                    <i class="icon-arrow_big_right margin2 cl-olivie "></i>
-                                {% endif %}
-                                Welcome!
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                {% if flag == 'database' %}
-                                    <i class="icon-arrow_big_right margin2 cl-olivie "></i>
-                                {% endif %}
-                                DataBase
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                {% if flag == 'admin' %}
-                                    <i class="icon-arrow_big_right margin2 cl-olivie "></i>
-                                {% endif %}
-                                Admin
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
+
             <!-- CONTENT -->
             {% block body %}
             {% endblock %}

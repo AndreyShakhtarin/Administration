@@ -1,15 +1,18 @@
-configuration_homepage:
-    path:     /{page}/{sort}/{tag}
+homepage:
+    path:     /
+    defaults: { _controller: ConfigurationBundle:Default:index }
+welcome:
+    path:     /welcome
     defaults: { _controller: ConfigurationBundle:Default:welcome, page: 0, sort: name, tag: null }
 
 configuration_database:
-    path:     /{page}/{sort}/{tag}/database
+    path:     /database
     defaults: { _controller: ConfigurationBundle:Default:dataBaseConfig, page: config, sort: parameters, tag: for }
 
 configuration_admin:
-    path:     /{page}/{sort}/{tag}/admin
+    path:     /final
     defaults: { _controller: ConfigurationBundle:Default:admin, page: config, sort: parameters, tag: for }
 
 configuration_confirmed:
-    path:     /{page}/{sort}/{tag}/confirmed
+    path:     /confirmed
     defaults: { _controller: ConfigurationBundle:Default:confirmed, page: all, sort: parameters, tag: was  }

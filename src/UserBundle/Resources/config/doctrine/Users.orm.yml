@@ -1,0 +1,29 @@
+UserBundle\Entity\Users:
+    type: entity
+    table:  users
+    reposytoryClass:  UserBundleR\Repository\UsersRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+          type: string
+        surname:
+          type: string
+        gender:
+          type: string
+        born:
+          type: datetime
+        country:
+          type: string
+        city:
+          type: string
+        status:
+          type: string
+        profession:
+          type: string
+        token:
+          type: string

@@ -1,6 +1,6 @@
 #homepage for any users
 user_homepage:
-    path:     /{page}/{sort}/{tag}
+    path:     /admin/{page}/{sort}/{tag}
     defaults: { _controller: UserBundle:Default:shows, page: 0, sort: name, tag: null }
 #registration new user
 register:
@@ -15,7 +15,7 @@ login:
 #path to action for SUPER ADMIN
 users:
     resource: "@UserBundle/Resources/config/routes/users.yml"
-    prefix:   /users
+    prefix:   /admin
 #show registered user
 register_confirmed:
     path: /register/confirmed/

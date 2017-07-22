@@ -1,8 +1,18 @@
-{% extends "@Configuration/Default/index.html.twig" %}
+{% extends "base.html.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/bundles/configuration/js/main.js') }}"></script>
+{% endblock %}
+{% block aside %}
+    {% include '@Configuration/Homepage/aside.html.twig' %}
+{% endblock %}
 {% block body %}
+    <div class="text-center bg-info l-offset-2 l-5 margin-bottom">
+        <h3 class="cl-olivie shadows box-shadows">Create Admin.</h3>
+    </div>
     {{ form_start( form ) }}
-    <div class="l-9">
-        <div class="line text-center">
+    <div class="l-9 padding-ob">
+        <div class="line text-center margin-bottom">
             <div class="left s-12 l-6 ">
                 <table >
                     <tbody>
@@ -25,7 +35,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="s-12 l-6 right">
+            <div class="s-12 l-6 right margin-bottom">
                 <table>
                     <tbody>
                         <tr>
