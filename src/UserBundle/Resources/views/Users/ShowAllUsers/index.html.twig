@@ -20,9 +20,9 @@
                 <td>{{ user.name }}</td>
                 <td>{{ user.surname }}</td>
                 <td>{{ user.birthday }}</td>
-                <td><a href="{{ path( 'show_user', { 'token' : user.confirmationtoken } ) }}">Show</a></td>
-                <td><a href="{{ path( 'edit_user', { 'token' : user.confirmationtoken } ) }}">Edit</a></td>
-                <td><a href="{{ path( 'delete_user', { 'token' : user.confirmationtoken } ) }}">Delete</a></td>
+                <td><a href="{{ path( 'show_user', { 'token' : user.token } ) }}">Show</a></td>
+                <td><a href="{{ path( 'edit_user', { 'token' : user.token } ) }}">Edit</a></td>
+                <td><a href="{{ path( 'delete_user', { 'token' : user.token } ) }}">Delete</a></td>
                 </tbody>
             {% endfor %}
         </table>

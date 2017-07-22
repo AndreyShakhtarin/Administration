@@ -10,7 +10,7 @@ namespace UserBundle\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
-use UserBundle\Controller\AbstractSecurityController as BaseController;
+use ConfigurationBundle\Controller\AbstractSecurityController;
 
 use UserBundle\Entity\User;
 use UserBundle\Form\EditType;
@@ -23,7 +23,7 @@ use UserBundle\Form\EditType;
  * Show all users, show user, create user, edit user, update user, accessed for operation on Super Admin
  * @package UserBundle\Controller
  */
-class DefaultController extends BaseController
+class DefaultController extends AbstractSecurityController
 {
 
     /**
@@ -67,7 +67,7 @@ class DefaultController extends BaseController
      */
     public function showAction( Request $request, $token )
     {
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByConfirmationToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
         $date = $user->getBirthday()->format( 'Y-m-d' );
         $user->setBirthday( $date );
 
@@ -101,8 +101,7 @@ class DefaultController extends BaseController
 
                 $data = $form->getData();
 
-                $token = sha1( $data->getEmail() . rand( 0, 9999) );
-                $user->setConfirmationToken( $token );
+                $user->setToken( );
 
                 $userManager->updateUser( $user );
 
@@ -126,7 +125,7 @@ class DefaultController extends BaseController
      */
     public function editAction( Request $request, $token )
     {
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByConfirmationToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
         if ( ! $user )
         {
             throw $this->createNotFoundException( 'User not found.' );
@@ -168,7 +167,7 @@ class DefaultController extends BaseController
     public function updateAction( Request $request, $token )
     {
         $em = $this->get( 'doctrine' )->getManager( );
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByConfirmationToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
         if ( ! $user )
         {
             throw $this->createNotFoundException( 'User not found.' );
@@ -213,7 +212,7 @@ class DefaultController extends BaseController
     public function deleteAction( Request $request, $token )
     {
         $em = $this->get( 'doctrine' )->getManager( );
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByConfirmationToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
 
         if ( ! $user )
         {
@@ -245,39 +244,4 @@ class DefaultController extends BaseController
             'data'  => $this->inst( $request )
         ) );
     }
-    
-    public function sendAction( $name  )
-    {
-
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('andreytestpanel@gmail.com')
-            ->setTo('dushamoil1988@gmail.com')
-            ->setBody(
-                $this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
-                    'Emails/registration.html.twig',
-                    array('name' => $name)
-                ),
-                'text/html'
-            )
-            /*
-             * If you also want to include a plaintext version of the message
-            ->addPart(
-                $this->renderView(
-                    'Emails/registration.txt.twig',
-                    array('name' => $name)
-                ),
-                'text/plain'
-            )
-            */
-        ;
-
-//        $mailer->send($message);
-
-        // or, you can also fetch the mailer service this way
-         $this->get('mailer')->send($message);
-
-        return $this->render( 'UserBundle:Users:Emails/index.html.twig');
-    }
-
 }

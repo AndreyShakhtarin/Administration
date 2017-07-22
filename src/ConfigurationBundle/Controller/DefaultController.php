@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
-use UserBundle\Controller\AbstractSecurityController;
-use UserBundle\Entity\User;
+use ConfigurationBundle\Controller\AbstractSecurityController;
+
 
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use FOS\UserBundle\Controller\SecurityController as BaseController;
 
 /**
  * Class DefaultController Base setting for working application
@@ -62,7 +60,7 @@ class DefaultController extends AbstractSecurityController
         if ( $hasAdmin )
         {
 
-            return $this->homepage( $request, $page, $sort, $tag );
+            return $this->helperRedirect( $request, $page, $sort, $tag );
         }
 
         return $this->render( 'ConfigurationBundle:Welcome:index.html.twig', array(
@@ -81,7 +79,7 @@ class DefaultController extends AbstractSecurityController
         $hasAdmin = $this->checkAdmin( );
         if ( $hasAdmin )
         {
-            return $this->renderToHomepage( $request );
+            return $this->helperRedirect( $request );
         }
 
         $configs = $this->getConfigs();
@@ -96,18 +94,17 @@ class DefaultController extends AbstractSecurityController
      * @param Request $request
      * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function adminAction( Request $request )
+    public function adminAction( Request $request)
     {
         $hasAdmin = $this->checkAdmin( );
         if ( $hasAdmin )
         {
-            return $this->homepage( $request );
+            return $this->helperRedirect( $request );
         }
         else
         {
             $this->setUp();
         }
-
 
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -139,7 +136,7 @@ class DefaultController extends AbstractSecurityController
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
                 $data = $form->getData();
-
+                $user->setToken();
                 $userManager->updateUser($user);
 
                 /*****************************************************
@@ -225,145 +222,40 @@ class DefaultController extends AbstractSecurityController
     }
 
     /**
-     * redirect on home page
-     * @param $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    private function homepage( $request, $page, $sort, $tag )
-    {
-
-        if ( $sort == 'check-email')
-        {
-           return $this->checkEmail( $request, $sort );
-        }
-        if ( $sort == 'confirm')
-        {
-            return $this->confirm( $request, $tag );
-        }
-        if ( $sort == 'confirmed' )
-        {
-            return $this->confirmed();
-        }
-
-        $this->loginAction( $request );
-        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User')->findByAll( $page, $sort, $tag );
-        $count = (int)(count($users['all_users'])/7 + 1);
-
-        foreach ( $users['users'] as $user )
-        {
-            $date = $user->getBirthday()->format( 'Y-m-d' );
-            $user->setBirthday( $date );
-        }
-
-
-        return $this->render('UserBundle:Default:index.html.twig', array(
-            'data'          => $this->inst( $request),
-            'current_page'  => $page,
-            'users'         => $users['users'],
-            'sort'          => $sort,
-            'count'         => $count,
-            'tag'           => $tag
-        ));
-    }
-
-    private function checkEmail( $request )
-    {
-
-        $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
-        if (empty($email)) {
-            return new RedirectResponse($this->get('router')->generate('configuration_homepage'));
-        }
-
-        $this->get('session')->remove('fos_user_send_confirmation_email/email');
-        $user = $this->get('fos_user.user_manager')->findUserByEmail($email);
-
-        if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
-        }
-
-        return $this->render( 'UserBundle:Registration:check_email.html.twig', array(
-            'data' => $this->inst( $request ),
-            'user' => $user,
-        ) );
-    }
-
-    private function confirm( $request, $token)
-    {
-        /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
-        $userManager = $this->get('fos_user.user_manager');
-
-        $user = $userManager->findUserByConfirmationToken($token);
-
-        if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
-        }
-
-        /** @var $dispatcher EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
-
-        $user->setConfirmationToken(null);
-        $user->setEnabled(true);
-
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
-
-        $userManager->updateUser($user);
-
-        if (null === $response = $event->getResponse()) {
-            $url = $this->generateUrl('fos_user_registration_confirmed');
-            $response = new RedirectResponse($url);
-        }
-
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
-
-        return $response;
-    }
-
-    /**
-     * Override parent method for confirmed
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function confirmed()
-    {
-        return $this->render('UserBundle:Registration:confirmed.html.twig', array(
-            'user' => $this->getUser(),
-        ));
-    }
-
-    /**
      * Create adn load users to database
      */
     public function createUsers()
     {
         $manager = $this->getDoctrine()->getManager();
-        $users_male = array( 'Noah', 'Liam', 'William', 'Mason', 'James', 'Benjamin', 'Jacob', 'Michael',  'Elijah', 'Ethan', 'Alexander', 'Oliver', 'Lucas' );
-        $users_female = array( 'Emma', 'Olivia', 'Ava', 'Sophia', 'Isabella', 'Mia', 'Charlotte', 'Abigail', 'Emily', 'Harper', 'Amelia', 'Evelyn', 'Elizabeth' );
-        $users_surname = array( 'Smith', 'Jones', 'Brown', 'Johnson', 'Williams', 'Miller', 'Taylor', 'Wilson', 'Davis', 'White' );
-        $users = array( 0 => $users_female, 1 => $users_male );
-        for ( $i = 0; $i < 40; $i++)
-        {
-            $user = new User();
-            $rand = rand( 0, 1 );
-            $_users = $users[ $rand ];
-            $key_n = array_rand( $_users, 1 );
-            $key_l = array_rand( $users_surname, 1 );
-
-            $user->setName( $_users[$key_n] );
-            $user->setUsername( $_users[$key_n] . md5($_users[$key_n] . rand(1,99999)));
-            $user->setSurname( $users_surname[$key_l]);
-            $time_r = rand( -199999999, 1400000000 );
-            $born = date('Y-m-d', $time_r);
-            $date = new \DateTime($born);
-            $user->setConfirmationToken( md5($_users[$key_n] . rand(1,99999)) );
-            $user->setBirthday( $date );
-            $user->setEnabled( 1 );
-            $user->setGender( $rand );
-            $user->setEmail( strtolower( $_users[$key_n] ). md5($_users[$key_n] . rand(0, 999999))  . '@gmail.com' );
-            $user->setPassword( rand( 1, 1000 ));
-
-            $manager->persist( $user );
-            $manager->flush();
-        }
+        $this->get( 'create_users')->createUsers( $manager );
+//        $users_male = array( 'Noah', 'Liam', 'William', 'Mason', 'James', 'Benjamin', 'Jacob', 'Michael',  'Elijah', 'Ethan', 'Alexander', 'Oliver', 'Lucas' );
+//        $users_female = array( 'Emma', 'Olivia', 'Ava', 'Sophia', 'Isabella', 'Mia', 'Charlotte', 'Abigail', 'Emily', 'Harper', 'Amelia', 'Evelyn', 'Elizabeth' );
+//        $users_surname = array( 'Smith', 'Jones', 'Brown', 'Johnson', 'Williams', 'Miller', 'Taylor', 'Wilson', 'Davis', 'White' );
+//        $users = array( 0 => $users_female, 1 => $users_male );
+//        for ( $i = 0; $i < 40; $i++)
+//        {
+//            $user = new User();
+//            $rand = rand( 0, 1 );
+//            $_users = $users[ $rand ];
+//            $key_n = array_rand( $_users, 1 );
+//            $key_l = array_rand( $users_surname, 1 );
+//
+//            $user->setName( $_users[$key_n] );
+//            $user->setUsername( $_users[$key_n] . md5($_users[$key_n] . rand(1,99999)));
+//            $user->setSurname( $users_surname[$key_l]);
+//            $time_r = rand( -199999999, 1400000000 );
+//            $born = date('Y-m-d', $time_r);
+//            $date = new \DateTime($born);
+//            $user->setToken();
+//            $user->setBirthday( $date );
+//            $user->setEnabled( 1 );
+//            $user->setGender( $rand );
+//            $user->setEmail( strtolower( $_users[$key_n] ). md5($_users[$key_n] . rand(0, 999999))  . '@gmail.com' );
+//            $user->setPassword( rand( 1, 1000 ));
+//
+//            $manager->persist( $user );
+//            $manager->flush();
+//        }
     }
 
     /**

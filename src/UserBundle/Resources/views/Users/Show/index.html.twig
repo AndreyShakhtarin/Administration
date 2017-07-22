@@ -33,6 +33,6 @@
             </tbody>
         </table>
         <a class="left btn btn-info" href="{{ path( 'show_all_users' ) }}">Show Users</a>
-        <a class="right btn btn-info" href="{{ path( 'edit_user', { "token" : user.confirmationtoken }) }}">Edit</a>
+        <a class="right btn btn-info" href="{{ path( 'edit_user', { "token" : user.token }) }}">Edit</a>
     </div>
 {% endblock body %}

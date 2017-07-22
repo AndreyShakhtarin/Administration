@@ -15,6 +15,8 @@ UserBundle\Entity\User:
             type: string
         birthday:
               type: datetime
+        token:
+              type: string
         gender:
             type: string
     lifecycleCallbacks: { }

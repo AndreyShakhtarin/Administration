@@ -12,6 +12,7 @@ namespace UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -25,6 +26,7 @@ class RegistrationType extends AbstractType
             ->add('name', TextType::class)
             ->add('surname', TextType::class)
             ->add('birthday', DateType::class)
+            ->add( 'token', HiddenType::class )
             ->add('gender', ChoiceType::class, array(
                 'choices' => array(
                     'male' => true,
