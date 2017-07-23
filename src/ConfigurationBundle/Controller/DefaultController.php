@@ -33,6 +33,8 @@ class DefaultController extends AbstractSecurityController
 
     public function indexAction( Request $request )
     {
+
+
         return $this->render( 'ConfigurationBundle:Homepage:homepage.html.twig', array(
             'data'  => $this->inst( $request ),
         ));
@@ -49,13 +51,13 @@ class DefaultController extends AbstractSecurityController
     public function welcomeAction( Request $request, $page, $sort, $tag  )
     {
 
-        $hasAdmin = $this->checkAdmin( );
-
-        if ( $hasAdmin )
-        {
-
-            return $this->helperRedirect( $request, $page, $sort, $tag );
-        }
+//        $hasAdmin = $this->checkAdmin( );
+//
+//        if ( $hasAdmin )
+//        {
+//
+//            return $this->helperRedirect( $request, $page, $sort, $tag );
+//        }
 
         return $this->render( 'ConfigurationBundle:Welcome:index.html.twig', array(
             'data' => $this->inst( $request ),
@@ -70,11 +72,11 @@ class DefaultController extends AbstractSecurityController
     public function dataBaseConfigAction( Request $request )
     {
 
-        $hasAdmin = $this->checkAdmin( );
-        if ( $hasAdmin )
-        {
-            return $this->helperRedirect( $request );
-        }
+//        $hasAdmin = $this->checkAdmin( );
+//        if ( $hasAdmin )
+//        {
+//            return $this->helperRedirect( $request );
+//        }
 
         $configs = $this->getConfigs();
         return $this->render('ConfigurationBundle:DataBase:index.html.twig', array(
@@ -133,7 +135,7 @@ class DefaultController extends AbstractSecurityController
                 $data = $form->getData();
                 $user->setToken();
 
-                $this->setUp( $user->getToken() );
+                $this->setUp( $user );
 
                 $userManager->updateUser($user);
 
@@ -174,11 +176,11 @@ class DefaultController extends AbstractSecurityController
      * Also create users.
      * @return bool
      */
-    public function setUp( $token )
+    public function setUp( $id_user)
     {
             $this->doCommand( array( 'command' => 'doctrine:database:create' ) );
             $this->doCommand( array( 'command' => 'doctrine:schema:update', '--force' => true ) );
-            $this->createUsers( $token );
+            $this->createUsers( $id_user );
 //            $this->doCommand( array( 'command' => 'doctrine:fixture:load',  'y' ) );
 
         return true;

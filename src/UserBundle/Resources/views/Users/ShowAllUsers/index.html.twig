@@ -16,10 +16,11 @@
             </thead>
             {% for user in users %}
                 <tbody>
+                {#<td>{{ user.user }}</td>#}
                 <td>{{ loop.index + ( current_page * 7 ) }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.surname }}</td>
-                <td>{{ user.birthday }}</td>
+                {#<td>{{ user.born }}</td>#}
                 <td><a href="{{ path( 'show_user', { 'token' : user.token } ) }}">Show</a></td>
                 <td><a href="{{ path( 'edit_user', { 'token' : user.token } ) }}">Edit</a></td>
                 <td><a href="{{ path( 'delete_user', { 'token' : user.token } ) }}">Delete</a></td>

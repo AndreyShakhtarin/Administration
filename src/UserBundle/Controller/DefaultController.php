@@ -37,20 +37,25 @@ class DefaultController extends AbstractSecurityController
     public function showsAction( Request $request, $page, $sort, $tag )
     {
 
-        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User')->findByAll( $page, $sort, $tag );
+        $admin = $this->getUser();
+        echo $admin;
+        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findByUsers( $admin );
 
-        foreach ( $users['users'] as $user )
-        {
-            $date = $user->getBirthday()->format( 'Y-m-d' );
-            $user->setBirthday( $date );
-        }
 
-        $count = (int)(count($users['all_users'])/7 + 1);
+
+
+//        foreach ( $users as $user )
+//        {
+//            $date = $user->getBorn()->format( 'Y-m-d' );
+//            $user->setBorn( $date );
+//        }
+
+        $count = (int)(count($users)/7 + 1);
 
 
         return $this->render( 'UserBundle:Users:ShowAllUsers/index.html.twig', array(
 
-            'users'         => $users['users'],
+            'users'         => $users,
             'count'         => $count,
             'current_page'  => $page,
             'sort'          => $sort,

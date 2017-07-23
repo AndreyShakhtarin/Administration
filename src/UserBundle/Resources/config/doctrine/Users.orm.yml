@@ -1,7 +1,7 @@
 UserBundle\Entity\Users:
     type: entity
     table:  users
-    reposytoryClass:  UserBundleR\Repository\UsersRepository
+    repositoryClass: UserBundle\Repository\UsersRepository
     id:
         id:
             type: integer
@@ -17,6 +17,9 @@ UserBundle\Entity\Users:
           type: string
         born:
           type: datetime
+        email:
+          type: string
+          unequal:  false
         country:
           type: string
         city:
@@ -34,3 +37,5 @@ UserBundle\Entity\Users:
         joinColumn:
           name: user_id
           referencedColumnName: id
+    lifecycleCallbacks: {  }
+

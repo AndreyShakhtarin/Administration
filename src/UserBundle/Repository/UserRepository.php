@@ -77,4 +77,15 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter( "$sort", $tag )
                 ->getQuery( );
     }
+
+    public function findByUsers( $admin )
+    {
+        $query = $this->getEntityManager()
+            ->createQuery( 'SELECT u FROM UserBundle:User u LEFT JOIN u.users us WHERE u.id = :id' )
+            ->setParameter( 'id', 1 )
+            ->setMaxResults(1)
+        ;
+
+        return $query->getResult();
+    }
 }
