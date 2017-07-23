@@ -1,7 +1,7 @@
 #All right with permission SUPER ADMIN
 #show all user for operation (show, edit, delete)
 show_all_users:
-    path: /edit/{page}/{sort}/
+    path: /shows/{page}/{sort}/
     defaults: { _controller: 'UserBundle:Default:shows', page: 0, sort: name, tag: null }
 #show selected user for
 show_user:
@@ -17,7 +17,7 @@ edit_user:
     defaults: { _controller: 'UserBundle:Default:edit' }
 #update user with data from path edit_user
 update_user:
-    path: /{token}/update/
+    path: /update/{token}/
     defaults: { _controller: UserBundle:Default:update }
     requirements: { _method: post|put }
 #delete user form database

@@ -4,31 +4,33 @@
         <h3 class="text-center">Show user: "{{ user.name }} {{ user.surname }}"</h3>
         <table class="table-responsive">
             <thead>
-            <th>Id</th>
             <th>Name</th>
             <th>Surname</th>
-            <th>Birthday</th>
-            <th>Password</th>
-            <th>Enabled</th>
+            <th>Born</th>
+            <th>Profession</th>
+            <th>Status</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Gender</th>
             </thead>
             <tbody>
-            <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.surname }}</td>
-            <td>{{ user.birthday }}</td>
-            <td>{{ user.password }}</td>
-            <td>{{ user.enabled }}</td>
+            <td>{{ user.born }}</td>
+            <td>{{ user.profession }}</td>
+            <td>{{ user.status }}</td>
+            <td>{{ user.country }}</td>
+            <td>{{ user.city }}</td>
+            <td>{{ user.gender }}</td>
             </tbody>
         </table>
         <table class="table-responsive margin-bottom">
             <thead>
             <th>Email</th>
-            <th>Password</th>
             </thead>
             <tbody>
             <td class="width-email">{{ user.email }}</td>
 
-            <td>{{ user.username }}</td>
 
             </tbody>
         </table>

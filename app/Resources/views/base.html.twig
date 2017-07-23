@@ -16,7 +16,7 @@
             %}
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
-            <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+            {#<script src="http://code.jquery.com/jquery-1.9.1.js"></script>#}
         {% endblock javascript %}
         <link rel="icon" type="image/x-icon" href="{{ asset('bundles/user/img/Setting-icon.png') }}" />
     </head>
@@ -106,10 +106,9 @@
         {% block javascripts %}
             {% javascripts
                 'bundles/user/js/responsee.js'
-                'bundles/user/js/bootstrap.js'
             %}
                 <script src="{{ asset_url }}"></script>
-            <script src="{{ asset( '/bundles/configuration/js/owl/owl.carousel.min.js') }}"></script>
+            {#<script src="{{ asset( '/bundles/configuration/js/owl/owl.carousel.min.js') }}"></script>#}
             {% endjavascripts %}
         {% endblock %}
 

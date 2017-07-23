@@ -78,14 +78,28 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 ->getQuery( );
     }
 
-    public function findByUsers( $admin )
+    public function findByUsers( $admin, $page = 0, $orderBy = 'name' )
     {
-        $query = $this->getEntityManager()
-            ->createQuery( 'SELECT u FROM UserBundle:User u LEFT JOIN u.users us WHERE u.id = :id' )
-            ->setParameter( 'id', 1 )
-            ->setMaxResults(1)
+
+        $id = $this->getEntityManager()
+            ->createQuery( 'SELECT u FROM UserBundle:User u WHERE u.username = :username' )
+            ->setParameter( 'username', "$admin" )
+            ->getResult()[0]
+            ->getId()
         ;
 
-        return $query->getResult();
+        $limit = 7;
+        $query = $this->getEntityManager()
+            ->createQuery( "SELECT u FROM UserBundle:Users u LEFT JOIN u.user us WHERE us.id = :id ORDER BY u.$orderBy" )
+            ->setParameter( 'id', $id )
+            ->setMaxResults( $limit )
+            ->setFirstResult( $page * $limit)
+
+        ;
+
+
+        $paginator = new Paginator( $query, $fetchJoinCollection = false );
+//        var_dump($paginator);
+        return $paginator;
     }
 }

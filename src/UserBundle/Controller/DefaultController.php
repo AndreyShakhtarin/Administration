@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use ConfigurationBundle\Controller\AbstractSecurityController;
 
 use UserBundle\Entity\User;
+use UserBundle\Entity\Users;
 use UserBundle\Form\EditType;
 
     
@@ -38,17 +39,13 @@ class DefaultController extends AbstractSecurityController
     {
 
         $admin = $this->getUser();
-        echo $admin;
-        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findByUsers( $admin );
+        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findByUsers( $admin, $page, $sort  );
 
-
-
-
-//        foreach ( $users as $user )
-//        {
-//            $date = $user->getBorn()->format( 'Y-m-d' );
-//            $user->setBorn( $date );
-//        }
+        foreach ( $users as $user )
+        {
+            $date = $user->getBorn()->format( 'Y-m-d' );
+            $user->setBorn( $date );
+        }
 
         $count = (int)(count($users)/7 + 1);
 
@@ -72,9 +69,9 @@ class DefaultController extends AbstractSecurityController
      */
     public function showAction( Request $request, $token )
     {
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
-        $date = $user->getBirthday()->format( 'Y-m-d' );
-        $user->setBirthday( $date );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
+        $date = $user->getBorn()->format( 'Y-m-d' );
+        $user->setBorn( $date );
 
         $this->loginAction( $request );
 
@@ -91,13 +88,11 @@ class DefaultController extends AbstractSecurityController
      */
     public function createAction( Request $request )
     {
-        $userManager = $this->get('fos_user.user_manager');
-        $formFactory = $this->get('fos_user.registration.form.factory');
 
-        $user = new User();
 
-        $form = $formFactory->createForm();
-        $form->setData($user);
+        $user = new Users();
+        $form = $this->createForm( EditType::class, $user )
+            ;
 
         $form->handleRequest($request);
 
@@ -130,7 +125,7 @@ class DefaultController extends AbstractSecurityController
      */
     public function editAction( Request $request, $token )
     {
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
         if ( ! $user )
         {
             throw $this->createNotFoundException( 'User not found.' );
@@ -172,15 +167,10 @@ class DefaultController extends AbstractSecurityController
     public function updateAction( Request $request, $token )
     {
         $em = $this->get( 'doctrine' )->getManager( );
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
         if ( ! $user )
         {
             throw $this->createNotFoundException( 'User not found.' );
-        }
-
-        if ( $user->isSuperAdmin() == true )
-        {
-            return $this->redirect( $this->generateUrl( 'error_admin' )) ;
         }
 
         $editForm   = $this->createForm( EditType::class, $user, [
@@ -224,29 +214,12 @@ class DefaultController extends AbstractSecurityController
             throw $this->createNotFoundException( 'User not found.' );
         }
 
-        if ( $user->isSuperAdmin() == true )
-        {
-            return $this->redirect( $this->generateUrl( 'error_admin' )) ;
-        }
-
         $user_name = $user->getName() . " " . $user->getSurname();
         $em->remove( $user );
         $em->flush();
         return $this->render( "UserBundle:Users:Delete/index.html.twig", array(
             'data' => $this->inst( $request ),
             'user_name' => $user_name,
-        ) );
-    }
-
-    /**
-     * For deprecated operation for Super Admin
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function errorAdminAction( Request $request )
-    {
-        return $this->render( 'UserBundle:Users:Delete/error.html.twig', array(
-            'data'  => $this->inst( $request )
         ) );
     }
 }

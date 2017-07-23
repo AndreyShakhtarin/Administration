@@ -70,6 +70,7 @@ input#_submit:hover {
 
 .box-shadows {
     box-shadow: 1px 2px 3px;
+    padding-bottom: 5px !important;
 }
 
 .bg-grey {
@@ -88,4 +89,12 @@ input#_submit:hover {
 
 .width-email {
     width: 43.09%;
+}
+
+.aside-nav li a {
+    padding: 0.35rem !important;
+    text-align: center;
+    text-shadow: 1px 1px grey;
+    color: silver !important;
+
 }

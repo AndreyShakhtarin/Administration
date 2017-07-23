@@ -13,7 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use UserBundle\Entity\User;
+use UserBundle\Entity\Users;
+use  Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EditType extends AbstractType
 {
@@ -25,9 +26,25 @@ class EditType extends AbstractType
         $builder
             ->add('name')
             ->add('surname')
-            ->add( 'username' )
+            ->add( 'status', ChoiceType::class, array(
+                'choices' => array(
+                    'Marred'        => 'marred',
+                    'Not marred'    => 'not marred'
+                )
+            ) )
+            ->add( 'country')
+            ->add( 'city')
             ->add( 'email' )
-            ->add( 'birthday', DateType::class  );
+            ->add( 'born', DateType::class  )
+            ->add('gender', ChoiceType::class, array(
+                'choices' => array(
+                    'male' => true,
+                    'female' => false,
+                    'other' => 2,
+                    )
+                )
+            )
+        ;
 
     }
 
@@ -37,7 +54,7 @@ class EditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => User::class,
+            'data_class' => Users::class,
         ));
     }
 

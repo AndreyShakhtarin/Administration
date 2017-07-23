@@ -4,15 +4,19 @@
     {% include '@User/Users/Aside/aside.html.twig' %}
 {% endblock %}
 {% block body %}
-    <section class="s-12 l-8">
+    <section class="s-12 l-10">
         <h3 class="text-center">Show All Users</h3>
         <table class="table-responsive margin-bottom">
             <thead>
                 <th>#</th>
                 <th>Name</th>
                 <th>Lastname</th>
-                <th>Birthday</th>
+                <th>Born</th>
+                <th>Profession</th>
+                <th>Status</th>
+                <th>Gender</th>
                 <th class="text-center" colspan="3">action</th>
+
             </thead>
             {% for user in users %}
                 <tbody>
@@ -20,10 +24,13 @@
                 <td>{{ loop.index + ( current_page * 7 ) }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.surname }}</td>
-                {#<td>{{ user.born }}</td>#}
-                <td><a href="{{ path( 'show_user', { 'token' : user.token } ) }}">Show</a></td>
-                <td><a href="{{ path( 'edit_user', { 'token' : user.token } ) }}">Edit</a></td>
-                <td><a href="{{ path( 'delete_user', { 'token' : user.token } ) }}">Delete</a></td>
+                <td>{{ user.born }}</td>
+                <td>{{ user.profession }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.gender }}</td>
+                <td><a href="{{ path( 'show_user', { 'token' : user.token } ) }}"><i class="icon-eye btn-sm btn-success"></i></a></td>
+                <td><a href="{{ path( 'edit_user', { 'token' : user.token } ) }}"><i class="icon-pen btn-sm btn-warning"></i></a></td>
+                <td><a href="{{ path( 'delete_user', { 'token' : user.token } ) }}"><i class="icon-cross_mark btn-sm btn-danger"></i></a></td>
                 </tbody>
             {% endfor %}
         </table>
