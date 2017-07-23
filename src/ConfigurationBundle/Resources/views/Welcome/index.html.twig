@@ -1,7 +1,14 @@
 {% extends "base.html.twig" %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('/bundles/configuration/js/main.js') }}"></script>
+    <script src="{{ asset('/bundles/configuration/js/main.js') }}">var url = window.location.pathname, link;
+        link = url.replace('/app_dev.php/', '');
+        $jq = jQuery.noConflict();
+        $jq(document).ready(function () {
+            id = $('#' + link);
+            id.addClass('box-shadows');
+            id.children('a').append('<i class="icon-arrow_big_left cl-olivie"></i>');
+        });</script>
 {% endblock %}
 {% block aside %}
     {% include '@Configuration/Homepage/aside.html.twig' %}
@@ -19,6 +26,6 @@
         </div>
     </div>
     <div class="l-12 ">
-        <a href="{{ path('configuration_database') }}" class="btn btn-info right navbar-inverse">Next</a>
+        <a href="{{ path('configuration_database') }}" class="button rounded-btn right margin-button">Next</a>
     </div>
 {% endblock %}

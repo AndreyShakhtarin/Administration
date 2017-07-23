@@ -26,7 +26,6 @@ class RegistrationType extends AbstractType
             ->add('name', TextType::class)
             ->add('surname', TextType::class)
             ->add('birthday', DateType::class)
-            ->add( 'token', HiddenType::class )
             ->add('gender', ChoiceType::class, array(
                 'choices' => array(
                     'male' => true,

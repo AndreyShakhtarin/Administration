@@ -33,32 +33,21 @@ class DefaultController extends AbstractSecurityController
 
     public function indexAction( Request $request )
     {
-
-
         return $this->render( 'ConfigurationBundle:Homepage:homepage.html.twig', array(
             'data'  => $this->inst( $request ),
         ));
     }
 
     /**
-     * Start page
+     * Start page for Admin
      * @param Request $request
      * @param $page
      * @param $sort
      * @param $tag
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function welcomeAction( Request $request, $page, $sort, $tag  )
+    public function welcomeAction( Request $request )
     {
-
-//        $hasAdmin = $this->checkAdmin( );
-//
-//        if ( $hasAdmin )
-//        {
-//
-//            return $this->helperRedirect( $request, $page, $sort, $tag );
-//        }
-
         return $this->render( 'ConfigurationBundle:Welcome:index.html.twig', array(
             'data' => $this->inst( $request ),
         ));
@@ -71,13 +60,6 @@ class DefaultController extends AbstractSecurityController
      */
     public function dataBaseConfigAction( Request $request )
     {
-
-//        $hasAdmin = $this->checkAdmin( );
-//        if ( $hasAdmin )
-//        {
-//            return $this->helperRedirect( $request );
-//        }
-
         $configs = $this->getConfigs();
         return $this->render('ConfigurationBundle:DataBase:index.html.twig', array(
             'configs'   => $configs,
@@ -92,15 +74,6 @@ class DefaultController extends AbstractSecurityController
      */
     public function adminAction( Request $request)
     {
-//        $hasAdmin = $this->checkAdmin( );
-//        if ( $hasAdmin )
-//        {
-//            return $this->helperRedirect( $request );
-//        }
-//        else
-//        {
-////            $this->setUp();
-//        }
 
         /** @var $formFactory FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -113,6 +86,7 @@ class DefaultController extends AbstractSecurityController
         $user->setEnabled( true );
         $user->setSuperAdmin( true );
 
+        $this->preSettUp();
 
         $event = new GetResponseUserEvent($user, $request);
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
@@ -130,14 +104,12 @@ class DefaultController extends AbstractSecurityController
             if ($form->isValid()) {
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
-
                 $data = $form->getData();
-                $user->setToken();
-
-                $this->setUp( $user );
-
+                // create Users for new users
+                $admin = $user;
                 $userManager->updateUser($user);
+
+                $this->loadFixture( $admin );
 
                 /*****************************************************
                  * Add new functionality (e.g. log the registration) *
@@ -176,15 +148,22 @@ class DefaultController extends AbstractSecurityController
      * Also create users.
      * @return bool
      */
-    public function setUp( $id_user)
+    private function preSettUp( )
     {
             $this->doCommand( array( 'command' => 'doctrine:database:create' ) );
             $this->doCommand( array( 'command' => 'doctrine:schema:update', '--force' => true ) );
-            $this->createUsers( $id_user );
-//            $this->doCommand( array( 'command' => 'doctrine:fixture:load',  'y' ) );
 
-        return true;
+
     }
+
+    private function loadFixture( $admin )
+    {
+        $this->createUsers( $admin );
+//        $this->container->set( 'admin', $admin);
+//        $this->doCommand( array( 'command' => 'doctrine:fixture:load',  'y' ) );
+    }
+
+
 
     /**
      * Execute command for console
@@ -202,31 +181,12 @@ class DefaultController extends AbstractSecurityController
     }
 
     /**
-     * Check for Super Admin
-     * @return mixed
-     */
-    private function checkAdmin( )
-    {
-        $host = $this->getParameter( 'database_host' );
-        $name = $this->getParameter( 'database_name' );
-        $dbh['user'] = $this->getParameter( 'database_user' );
-        $dbh['pass'] = $this->getParameter( 'database_password' );
-        $dbh['dbh']  = "mysql:host=$host;dbname=$name";
-
-        $checkTable = $this->get( 'configuration_db' );
-        $checkTable->setInit( $dbh );
-        $hasAdmin = $checkTable->hasAdmin();
-
-        return $hasAdmin;
-    }
-
-    /**
      * Create adn load users to database
      */
-    public function createUsers( $token )
+    public function createUsers( $admin )
     {
         $manager = $this->getDoctrine()->getManager();
-        $this->get( 'create_users' )->createUsers( $manager, $token );
+        $this->get( 'create_users' )->createUsers( $manager, $admin );
     }
 
     /**

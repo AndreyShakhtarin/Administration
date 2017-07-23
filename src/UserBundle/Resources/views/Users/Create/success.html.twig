@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="l-12 text-center">
+        <h4 class="padding ">Successful! User "<b>{{ user.name }} {{ user.surname }}</b>" registered <a href="{{ path('homepage') }}">Back to Main</a></h4>
+    </div>
+{% endblock %}

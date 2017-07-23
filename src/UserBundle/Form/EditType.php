@@ -26,12 +26,7 @@ class EditType extends AbstractType
         $builder
             ->add('name')
             ->add('surname')
-            ->add( 'status', ChoiceType::class, array(
-                'choices' => array(
-                    'Marred'        => 'marred',
-                    'Not marred'    => 'not marred'
-                )
-            ) )
+            ->add('profession')
             ->add( 'country')
             ->add( 'city')
             ->add( 'email' )
@@ -44,6 +39,12 @@ class EditType extends AbstractType
                     )
                 )
             )
+            ->add( 'status', ChoiceType::class, array(
+                'choices' => array(
+                    'Marred'        => 'marred',
+                    'Not marred'    => 'not marred'
+                )
+            ) )
         ;
 
     }

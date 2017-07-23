@@ -35,7 +35,7 @@
     </div>
     <div class="l-12 ">
 
-        <a href="{{ path('configuration_admin') }}" class="btn btn-success right  navbar-inverse {% if not configs.config %} disabled {% endif %} " >Next</a>
-        <a href="{{ path('welcome') }}" class="btn btn-warning right  navbar-inverse">Previust</a>
+        <a href="{{ path('configuration_admin') }}" class="button rounded-btn right{% if not configs.config %} disabled {% endif %} " >Next </a>
+        <a href="{{ path('welcome') }}" class="button rounded-btn right margin-button">Previust</a>
     </div>
 {% endblock %}

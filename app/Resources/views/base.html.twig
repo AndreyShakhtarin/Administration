@@ -4,19 +4,17 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Administration WOO!!!{% endblock %}</title>
         {% block stylesheets %}
-            {% stylesheets 'bundles/user/css/*' filter='cssrewrite' %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets %}
-
-        {% endblock stylesheets %}
+            <link rel="stylesheet" href="{{ asset( '/bundles/user/css/components.css' ) }}">
+            <link rel="stylesheet" href="{{ asset( '/bundles/user/css/icons.css' ) }}">
+            <link rel="stylesheet" href="{{ asset( '/bundles/user/css/responsee.css' ) }}">
+            <link rel="stylesheet" href="{{ asset( '/bundles/user/css/main.css' ) }}">
+            <link rel="stylesheet" href="{{ asset( '/bundles/configuration/css/owl/owl.carousel.min.css' ) }}">
+            <link rel="stylesheet" href="{{ asset( '/bundles/configuration/css/owl/owl.theme.default.min.css' ) }}">
+                    {% endblock stylesheets %}
         {% block javascript %}
-            {% javascripts '@UserBundle/Resources/public/js/*'
-                'bundles/user/js/jquery-1.8.3.min.js'
-                'bundles/user/js/jquery-ui.min.js'
-            %}
-                <script src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-            {#<script src="http://code.jquery.com/jquery-1.9.1.js"></script>#}
+            <script src="{{ asset( '/bundles/user/js/jquery-1.9.1.js') }}"></script>
+            <script src="{{ asset( '/bundles/user/js/jquery-1.8.3.min.js') }}"></script>
+            <script src="{{ asset( '/bundles/user/js/jquery-ui.min.js') }}"></script>
         {% endblock javascript %}
         <link rel="icon" type="image/x-icon" href="{{ asset('bundles/user/img/Setting-icon.png') }}" />
     </head>
@@ -47,6 +45,9 @@
                             </li>
                             <li>
                                 <a href="{{ path('create_user') }}"> New User <i class="icon-sli-user-follow "></i></a>
+                            </li>
+                            <li>
+                                <a>Create Random Users <i class="icon-sli-people "></i></a>
                             </li>
                         {% else %}
                             <li>
@@ -104,12 +105,7 @@
         </div>
     </footer>
         {% block javascripts %}
-            {% javascripts
-                'bundles/user/js/responsee.js'
-            %}
-                <script src="{{ asset_url }}"></script>
-            {#<script src="{{ asset( '/bundles/configuration/js/owl/owl.carousel.min.js') }}"></script>#}
-            {% endjavascripts %}
+            <script src="{{ asset( '/bundles/user/js/responsee.js') }}"></script>
         {% endblock %}
 
     </body>

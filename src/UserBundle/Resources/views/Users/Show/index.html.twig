@@ -4,37 +4,35 @@
         <h3 class="text-center">Show user: "{{ user.name }} {{ user.surname }}"</h3>
         <table class="table-responsive">
             <thead>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Born</th>
-            <th>Profession</th>
-            <th>Status</th>
-            <th>Country</th>
-            <th>City</th>
-            <th>Gender</th>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Born</th>
+                <th>Profession</th>
+                <th>Status</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Gender</th>
+                <th>Email</th>
+            </tr>
             </thead>
             <tbody>
-            <td>{{ user.name }}</td>
-            <td>{{ user.surname }}</td>
-            <td>{{ user.born }}</td>
-            <td>{{ user.profession }}</td>
-            <td>{{ user.status }}</td>
-            <td>{{ user.country }}</td>
-            <td>{{ user.city }}</td>
-            <td>{{ user.gender }}</td>
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.surname }}</td>
+                <td>{{ user.born }}</td>
+                <td>{{ user.profession }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.country }}</td>
+                <td>{{ user.city }}</td>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.email }}</td>
+            </tr>
             </tbody>
         </table>
-        <table class="table-responsive margin-bottom">
-            <thead>
-            <th>Email</th>
-            </thead>
-            <tbody>
-            <td class="width-email">{{ user.email }}</td>
-
-
-            </tbody>
-        </table>
-        <a class="left btn btn-info" href="{{ path( 'show_all_users' ) }}">Show Users</a>
-        <a class="right btn btn-info" href="{{ path( 'edit_user', { "token" : user.token }) }}">Edit</a>
+        <div class="text-center">
+            <a class="  button rounded-btn text-center submit-btn" href="{{ path( 'show_all_users' ) }}">Show Users</a>
+            <a class=" button rounded-btn text-center reload-btn" href="{{ path( 'edit_user', { "token" : user.token }) }}">Edit</a>
+        </div>
     </div>
 {% endblock body %}

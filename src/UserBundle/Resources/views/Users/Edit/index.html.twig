@@ -40,13 +40,17 @@
             <th>{{ form_label( edit_form.gender ) }}</th>
             <td>{{ form_widget( edit_form.gender ) }}</td>
         </tr>
+        <tr>
+            <th>{{ form_label( edit_form.profession ) }}</th>
+            <td>{{ form_widget( edit_form.profession ) }}</td>
+        </tr>
         </tbody>
     </table>
     <div class="text-center">
-        <input type="submit" href="{{ path( 'update_user', { "token" : token}) }}" class="btn btn-warning" value="Update">
+        <input type="submit" href="{{ path( 'update_user', { "token" : token}) }}" class="button rounded-btn reload-btn" value="Update">
         {{ form_end( edit_form ) }}
-        <a href="{{ path( 'delete_user', { 'token' : token } ) }}" class="btn btn-danger">Delete</a>
-        <a href="{{ path( 'show_user', { "token" : token }) }}" class="btn btn-info">Cancel</a>
+        <a href="{{ path( 'delete_user', { 'token' : token } ) }}" class="button rounded-btn cancel-btn">Delete</a>
+        <a href="{{ path( 'show_user', { "token" : token }) }}" class="button rounded-btn submit-btn">Cancel</a>
     </div>
 
 {% endblock body %}

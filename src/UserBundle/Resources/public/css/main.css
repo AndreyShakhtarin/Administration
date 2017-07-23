@@ -68,9 +68,18 @@ input#_submit:hover {
     text-shadow: black;
 }
 
+form {
+    line-height: 1.2;
+}
+
+form input
+{
+    line-height: 1.8
+}
 .box-shadows {
-    box-shadow: 1px 2px 3px;
-    padding-bottom: 5px !important;
+    box-shadow: 1px 2px 3px !important;
+    border-radius: 5px;
+    color: #0f0f0f;
 }
 
 .bg-grey {
@@ -97,4 +106,25 @@ input#_submit:hover {
     text-shadow: 1px 1px grey;
     color: silver !important;
 
+}
+
+.pagination{
+    padding: 4px 8px !important;
+}
+
+.action {
+    padding: -0 !important;
+    width: 29px;
+}
+
+.margin-button
+{
+    margin: 0 5px;
+}
+aside {
+    padding-bottom: 5px !important;
+}
+
+.button {
+    line-height: 1.2
 }

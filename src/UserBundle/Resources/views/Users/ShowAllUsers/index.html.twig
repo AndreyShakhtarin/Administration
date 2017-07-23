@@ -28,9 +28,9 @@
                 <td>{{ user.profession }}</td>
                 <td>{{ user.status }}</td>
                 <td>{{ user.gender }}</td>
-                <td><a href="{{ path( 'show_user', { 'token' : user.token } ) }}"><i class="icon-eye btn-sm btn-success"></i></a></td>
-                <td><a href="{{ path( 'edit_user', { 'token' : user.token } ) }}"><i class="icon-pen btn-sm btn-warning"></i></a></td>
-                <td><a href="{{ path( 'delete_user', { 'token' : user.token } ) }}"><i class="icon-cross_mark btn-sm btn-danger"></i></a></td>
+                <td><a class="button rounded-full-btn action submit-btn " href="{{ path( 'show_user', { 'token' : user.token } ) }}"><i class="icon-eye"></i></a></td>
+                <td><a class="button rounded-full-btn action reload-btn" href="{{ path( 'edit_user', { 'token' : user.token } ) }}"><i class="icon-pen"></i></a></td>
+                <td><a class="button rounded-full-btn action cancel-btn" href="{{ path( 'delete_user', { 'token' : user.token } ) }}"><i class="icon-cross_mark "></i></a></td>
                 </tbody>
             {% endfor %}
         </table>

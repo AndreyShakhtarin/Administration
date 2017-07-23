@@ -38,8 +38,8 @@ class DefaultController extends AbstractSecurityController
     public function showsAction( Request $request, $page, $sort, $tag )
     {
 
-        $admin = $this->getUser();
-        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findByUsers( $admin, $page, $sort  );
+        $admin = $this->getDoctrine()->getRepository( 'UserBundle:User')->findOneByIdAdmin( $this->getUser() );
+        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findByUsers( $admin->getId(), $page, $sort  );
 
         foreach ( $users as $user )
         {
@@ -70,6 +70,10 @@ class DefaultController extends AbstractSecurityController
     public function showAction( Request $request, $token )
     {
         $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
+        if ( ! $user )
+        {
+            return $this->redirectToRoute( 'homepage' );
+        }
         $date = $user->getBorn()->format( 'Y-m-d' );
         $user->setBorn( $date );
 
@@ -88,25 +92,20 @@ class DefaultController extends AbstractSecurityController
      */
     public function createAction( Request $request )
     {
-
-
+        $em = $this->getDoctrine()->getManager();
         $user = new Users();
-        $form = $this->createForm( EditType::class, $user )
-            ;
-
+        $form = $this->createForm( EditType::class, $user );
+        $admin = $em->getRepository('UserBundle:User')->findOneByAdmin( $this->getUser() );
         $form->handleRequest($request);
+        if ( $form->isSubmitted() && $form->isValid() ) {
+            $user->setToken( );
+            $_user = $form->getData();
+            $em->persist($admin);
+            $em->persist($_user);
+            $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-
-                $data = $form->getData();
-
-                $user->setToken( );
-
-                $userManager->updateUser( $user );
-
-                return $this->render( 'UserBundle:Registration:confirmed.html.twig', array(
-                    'user' => $user,
+            return $this->render( 'UserBundle:Users:Create/success.html.twig', array(
+                    'user' => $_user,
                 ));
 
         }
@@ -125,10 +124,12 @@ class DefaultController extends AbstractSecurityController
      */
     public function editAction( Request $request, $token )
     {
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
+        $user = $this->getDoctrine( )
+            ->getRepository( 'UserBundle:Users' )
+            ->findOneByToken( $token );
         if ( ! $user )
         {
-            throw $this->createNotFoundException( 'User not found.' );
+            return $this->redirectToRoute( 'homepage' );
         }
 
         $editForm = $this->createForm( EditType::class, $user, array(
@@ -166,11 +167,14 @@ class DefaultController extends AbstractSecurityController
      */
     public function updateAction( Request $request, $token )
     {
-        $em = $this->get( 'doctrine' )->getManager( );
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
+        $em = $this->get( 'doctrine' )
+            ->getManager( );
+        $user = $this->getDoctrine( )
+            ->getRepository( 'UserBundle:Users' )
+            ->findOneByToken( $token );
         if ( ! $user )
         {
-            throw $this->createNotFoundException( 'User not found.' );
+            return $this->redirectToRoute( 'homepage' );
         }
 
         $editForm   = $this->createForm( EditType::class, $user, [
@@ -207,11 +211,11 @@ class DefaultController extends AbstractSecurityController
     public function deleteAction( Request $request, $token )
     {
         $em = $this->get( 'doctrine' )->getManager( );
-        $user = $this->getDoctrine( )->getRepository( 'UserBundle:User' )->findOneByToken( $token );
+        $user = $this->getDoctrine( )->getRepository( 'UserBundle:Users' )->findOneByToken( $token );
 
         if ( ! $user )
         {
-            throw $this->createNotFoundException( 'User not found.' );
+            return $this->redirectToRoute( 'homepage' );
         }
 
         $user_name = $user->getName() . " " . $user->getSurname();

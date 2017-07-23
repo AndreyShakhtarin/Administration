@@ -6,8 +6,6 @@ user_homepage:
 register:
     path:     register/
     defaults: { _controller: UserBundle:Registration:register }
-
-
 #login user for next step
 login:
     path:     /login

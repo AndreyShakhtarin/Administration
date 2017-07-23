@@ -68,7 +68,7 @@ class CreateUsers
             $profession_r = array_rand( $professions, 1);
             $user->setProfession( $professions[ $profession_r ] );
             $user->setGender( $rand );
-            $user->setEmail( strtolower( $_users[$key_n] ). md5($_users[$key_n] . rand(0, 999999) )  . '@gmail.com' );
+            $user->setEmail( strtolower( $user->getName() ) . "_" . strtolower( $user->getSurname() ) . date( 'Y', $time_r ) . '@gmail.com' );
 
             $manager->persist( $id_user);
             $manager->persist( $user );

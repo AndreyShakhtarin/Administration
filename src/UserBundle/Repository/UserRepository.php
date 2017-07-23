@@ -13,93 +13,43 @@ use UserBundle\Entity\User;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-    public  function findByAll( $page, $sort, $tag )
+
+    /**
+     * find admin user
+     * @param $admin_username
+     * @return mixed
+     */
+    public function findOneByIdAdmin( $admin_username )
     {
-        $limit = 7;
-        $query = $tag != null ? $this->withTag( $page, $sort, $tag, $limit ): $this->withoutTag( $page, $sort, $limit );
-        $query_user = $tag != null ? $this->withTagAll( $sort, $tag ): $this->withoutTagAll( );
-
-        $res = array( 'users' => $query->getResult( ), 'all_users' => $query_user->getResult( ) );
-
-        return $res;
-    }
-
-    public function findByUser( User $user )
-    {
-        $data['username'] = $user->getUsername();
-        $data['email'] = $user->getEmail();
-
-        foreach ( $data as $field => $value )
-        {
-            $user_db[ $field ] = $this->createQueryBuilder( 'u' )
-                ->select( "u.$field" )
-                ->where( "u.$field = :$field" )
-                ->setParameter( $field, $value )
-                ->getQuery()
-                ->getResult();
-        }
-
-        return $user_db;
-    }
-
-    private function withTag( $page, $sort, $tag, $limit )
-    {
-        return $query = $this->createQueryBuilder('u')
-                ->where( "u.$sort = :$sort")
-                ->setParameter( "$sort", $tag )
-                ->orderBy("u.$sort")
-
-                ->setFirstResult( $page *  $limit )
-                ->setMaxResults( 7 )
-                ->getQuery( );
-    }
-
-    private function withoutTag( $page, $sort, $limit )
-    {
-        return $query = $this->createQueryBuilder('u')
-                ->orderBy("u.$sort")
-
-                ->setFirstResult( $page *  $limit )
-                ->setMaxResults( 7 )
-                ->getQuery( );
-    }
-
-    private function withoutTagAll()
-    {
-        return $this->createQueryBuilder( 'u' )
-                ->getQuery( );
-    }
-
-    private function withTagAll( $sort, $tag )
-    {
-        return $this->createQueryBuilder( 'u' )
-                ->where( "u.$sort = :$sort" )
-                ->setParameter( "$sort", $tag )
-                ->getQuery( );
-    }
-
-    public function findByUsers( $admin, $page = 0, $orderBy = 'name' )
-    {
-
-        $id = $this->getEntityManager()
+        $admin = $this->getEntityManager()
             ->createQuery( 'SELECT u FROM UserBundle:User u WHERE u.username = :username' )
-            ->setParameter( 'username', "$admin" )
+            ->setParameter( 'username', "$admin_username" )
             ->getResult()[0]
-            ->getId()
         ;
+            return $admin;
+    }
 
-        $limit = 7;
+    /**
+     * Return found users for current  super admin
+     * @param $admin_id
+     * @param int $page
+     * @param string $orderBy
+     * @param null $tag
+     * @param int $limit
+     * @return Paginator
+     */
+    public function findByUsers( $admin_id, $page = 0, $orderBy = 'name', $tag = null,  $limit = 7)
+    {
+
         $query = $this->getEntityManager()
             ->createQuery( "SELECT u FROM UserBundle:Users u LEFT JOIN u.user us WHERE us.id = :id ORDER BY u.$orderBy" )
-            ->setParameter( 'id', $id )
+            ->setParameter( 'id', $admin_id )
             ->setMaxResults( $limit )
-            ->setFirstResult( $page * $limit)
-
+            ->setFirstResult( $page * $limit )
         ;
 
-
         $paginator = new Paginator( $query, $fetchJoinCollection = false );
-//        var_dump($paginator);
+
         return $paginator;
     }
 }
