@@ -1,6 +1,8 @@
 homepage:
     path:     /
     defaults: { _controller: ConfigurationBundle:Default:index }
+
+
 welcome:
     path:     /welcome
     defaults: { _controller: ConfigurationBundle:Default:welcome, page: 0, sort: name, tag: null }

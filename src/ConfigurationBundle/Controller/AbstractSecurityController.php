@@ -42,60 +42,6 @@ class AbstractSecurityController extends SecurityController
         'mailer_user',
         'mailer_password'
     );
-    /**
-     * Redirect for routes with registration
-     * @param $request
-     * @param $name
-     * @param $sort
-     * @param $tag
-     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function helperRedirect( $request, $name = null, $sort = null, $tag = null )
-    {
-        switch ( $sort ) {
-            case $sort == 'check-email' :
-                return $this->checkEmail($request);
-            case $sort == 'confirm' :
-                return $this->confirm($request, $tag);
-            case $sort == 'confirmed' :
-                return $this->confirmed();
-            default : return $this->homepage( $request, $name, $sort, $tag );
-        }
-
-    }
-
-    /**
-     * redirect on home page
-     * @param $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    private function homepage( $request, $page, $sort, $tag )
-    {
-
-        $this->loginAction( $request );
-
-        $users = $this->getDoctrine( )->getRepository( 'UserBundle:User')->findByAll( $page, $sort, $tag );
-        $count = (int)(count($users['all_users'])/7 + 1);
-
-        foreach ( $users['users'] as $user )
-        {
-            $date = $user->getBirthday()->format( 'Y-m-d' );
-            $user->setBirthday( $date );
-        }
-
-
-        return $this->render('UserBundle:Default:index.html.twig', array(
-            'data'          => $this->inst( $request),
-            'current_page'  => $page,
-            'users'         => $users['users'],
-            'sort'          => $sort,
-            'count'         => $count,
-            'tag'           => $tag
-        ));
-    }
-
-
-
 
     /**
      * Redirect to confirmed page

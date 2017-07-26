@@ -17,6 +17,12 @@ UserBundle\Entity\User:
               type: datetime
         gender:
             type: string
+        facebookID:
+            type: string
+            nullable: true
+        facebookAccessToken:
+            type: string
+            nullable: true
     oneToMany:
       users:
         targetEntity: Users

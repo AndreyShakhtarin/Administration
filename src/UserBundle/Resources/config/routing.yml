@@ -6,10 +6,6 @@ user_homepage:
 register:
     path:     register/
     defaults: { _controller: UserBundle:Registration:register }
-#login user for next step
-login:
-    path:     /login
-    defaults: { _controller: UserBundle:User:index }
 #path to action for SUPER ADMIN
 users:
     resource: "@UserBundle/Resources/config/routes/users.yml"

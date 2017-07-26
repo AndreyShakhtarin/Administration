@@ -18,7 +18,9 @@ services:
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
         public: false
-
+    my.oauth_aware.user_provider.service:
+        class:        UserBundle\Security\Core\User\UserFOSUBUserProvider
+        arguments: ['@fos_user.user_manager', { facebook: facebook_id }]
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
 #    AppBundle\:
