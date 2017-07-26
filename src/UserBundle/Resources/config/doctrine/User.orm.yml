@@ -11,13 +11,17 @@ UserBundle\Entity\User:
     fields:
         name:
             type: string
+            nullable: true
         surname:
             type: string
+            nullable: true
         birthday:
               type: datetime
+              nullable: true
         gender:
             type: string
-        facebookID:
+            nullable: true
+        facebook_id:
             type: string
             nullable: true
         facebookAccessToken:

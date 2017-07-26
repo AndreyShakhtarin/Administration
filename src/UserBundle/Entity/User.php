@@ -249,4 +249,10 @@ class User extends BaseUser
     {
         return $this->facebookAccessToken;
     }
+    /**
+     * @var string
+     */
+    private $facebook_id;
+
+
 }
